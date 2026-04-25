@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K-Dentrix Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal:  { DEFAULT: '#1B6B6B', light: '#2A9090', pale: '#E6F4F4' },
+            deep:  '#1A1A2E',
+            gold:  '#C9A84C',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    * { font-family: 'Inter', 'Segoe UI', sans-serif; }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    /* Spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner { animation: spin 0.8s linear infinite; }
+    /* Toast slide-in */
+    @keyframes slideUp { from { transform: translateY(80px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .toast-enter { animation: slideUp 0.3s ease forwards; }
+    @keyframes slideDown { from { transform: translateY(0); opacity: 1; } to { transform: translateY(80px); opacity: 0; } }
+    .toast-exit { animation: slideDown 0.3s ease forwards; }
+    /* Modal backdrop */
+    .modal-backdrop { backdrop-filter: blur(4px); }
+    /* Sidebar transition */
+    .nav-link { transition: all 0.15s ease; }
+    /* Table row hover */
+    .tbl-row:hover td { background-color: #f8fafc; }
+    /* Fade in */
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.25s ease forwards; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased">
+  <div id="root"></div>
+
+  <!-- React + ReactDOM + Babel (CDN) -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+    const { useState, useEffect, useCallback, useRef, createContext, useContext } = React;
+
+    /* ─────────────────────────────────────────────
+       CONSTANTS & HELPERS
+    ───────────────────────────────────────────── */
+    const API = '/api';
+
+    function authHeaders(token) {
+      return { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
+    }
+
+    function fmtDate(str) {
+      if (!str) return '—';
+      return str;
+    }
+
+    const STATUS_STYLES = {
+      pending:   'bg-amber-100 text-amber-800',
+      confirmed: 'bg-emerald-100 text-emerald-800',
+      completed: 'bg-blue-100 text-blue-800',
+      cancelled: 'bg-red-100 text-red-800',
+    };
+
+    const PAYMENT_STYLES = {
+      unpaid:       'bg-slate-100 text-slate-600',
+      deposit_paid: 'bg-emerald-100 text-emerald-700',
+      paid:         'bg-blue-100 text-blue-700',
+    };
+
+    /* ─────────────────────────────────────────────
+       AUTH CONTEXT
+    ───────────────────────────────────────────── */
+    const AuthCtx = createContext(null);
+
+    function AuthProvider({ children }) {
+      const [token, setToken]   = useState(() => localStorage.getItem('kdx_token'));
+      const [admin, setAdmin]   = useState(null);
+
+      const login = useCallback((tok, adminData) => {
+        localStorage.setItem('kdx_token', tok);
+        setToken(tok);
+        setAdmin(adminData);
+      }, []);
+
+      const logout = useCallback(() => {
+        localStorage.removeItem('kdx_token');
+        setToken(null);
+        setAdmin(null);
+      }, []);
+
+      return (
+        <AuthCtx.Provider value={{ token, admin, login, logout }}>
+          {children}
+        </AuthCtx.Provider>
+      );
+    }
+
+    function useAuth() { return useContext(AuthCtx); }
+
+    /* ─────────────────────────────────────────────
+       TOAST CONTEXT
+    ───────────────────────────────────────────── */
+    const ToastCtx = createContext(null);
+
+    function ToastProvider({ children }) {
+      const [toasts, setToasts] = useState([]);
+
+      const addToast = useCallback((msg, type = 'success') => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, msg, type }]);
+        setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 3800);
+      }, []);
+
+      return (
+        <ToastCtx.Provider value={addToast}>
+          {children}
+          <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none">
+            {toasts.map(t => (
+              <div key={t.id} className={`toast-enter pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl shadow-xl text-sm font-medium text-white max-w-xs
+                ${t.type === 'error' ? 'bg-red-600' : t.type === 'warning' ? 'bg-amber-500' : 'bg-teal'}`}>
+                <span>{t.type === 'error' ? '✕' : t.type === 'warning' ? '⚠' : '✓'}</span>
+                <span>{t.msg}</span>
+              </div>
+            ))}
+          </div>
+        </ToastCtx.Provider>
+      );
+    }
+
+    function useToast() { return useContext(ToastCtx); }
+
+    /* ─────────────────────────────────────────────
+       ROUTER (hash-based, no external dep)
+    ───────────────────────────────────────────── */
+    function useRoute() {
+      const [route, setRoute] = useState(() => window.location.hash.replace('#', '') || '/');
+      useEffect(() => {
+        const handler = () => setRoute(window.location.hash.replace('#', '') || '/');
+        window.addEventListener('hashchange', handler);
+        return () => window.removeEventListener('hashchange', handler);
+      }, []);
+      const navigate = useCallback((path) => { window.location.hash = path; }, []);
+      return { route, navigate };
+    }
+
+    /* ─────────────────────────────────────────────
+       SPINNER
+    ───────────────────────────────────────────── */
+    function Spinner({ size = 'md' }) {
+      const sz = size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-10 h-10' : 'w-6 h-6';
+      return (
+        <svg className={`spinner ${sz} text-teal`} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
+        </svg>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       STATUS BADGE
+    ───────────────────────────────────────────── */
+    function StatusBadge({ status, type = 'status' }) {
+      const styles = type === 'payment' ? PAYMENT_STYLES : STATUS_STYLES;
+      const cls = styles[status] || 'bg-slate-100 text-slate-600';
+      const label = status ? status.replace('_', ' ') : '—';
+      return (
+        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold capitalize ${cls}`}>
+          {label}
+        </span>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       CONFIRM MODAL
+    ───────────────────────────────────────────── */
+    function ConfirmModal({ title, message, confirmLabel = 'Confirm', confirmClass = 'bg-red-600 hover:bg-red-700', onConfirm, onCancel }) {
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop bg-black/40">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 fade-in">
+            <h3 className="text-base font-bold text-slate-800 mb-2">{title}</h3>
+            <p className="text-sm text-slate-500 mb-6">{message}</p>
+            <div className="flex gap-3 justify-end">
+              <button onClick={onCancel} className="px-4 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                Cancel
+              </button>
+              <button onClick={onConfirm} className={`px-4 py-2 text-sm font-medium text-white rounded-lg transition-colors ${confirmClass}`}>
+                {confirmLabel}
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       STATUS UPDATE MODAL
+    ───────────────────────────────────────────── */
+    function StatusModal({ appointment, onClose, onUpdated }) {
+      const { token } = useAuth();
+      const toast = useToast();
+      const [status, setStatus] = useState(appointment.status);
+      const [loading, setLoading] = useState(false);
+
+      async function handleUpdate() {
+        if (status === appointment.status) { onClose(); return; }
+        setLoading(true);
+        try {
+          const res = await fetch(`${API}/admin/appointments/${appointment._id}/status`, {
+            method: 'PATCH',
+            headers: authHeaders(token),
+            body: JSON.stringify({ status }),
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast(`Appointment marked as ${status}`, 'success');
+            onUpdated();
+            onClose();
+          } else {
+            toast(data.message || 'Update failed', 'error');
+          }
+        } catch {
+          toast('Network error. Please try again.', 'error');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      const statuses = ['pending', 'confirmed', 'completed', 'cancelled'];
+
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center modal-backdrop bg-black/40">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 fade-in">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-base font-bold text-slate-800">Update Status</h3>
+              <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-xl leading-none">&times;</button>
+            </div>
+            <p className="text-xs text-slate-500 mb-1">Booking</p>
+            <p className="text-sm font-semibold text-slate-700 mb-4">{appointment.bookingRef} — {appointment.firstName} {appointment.lastName}</p>
+            <div className="grid grid-cols-2 gap-2 mb-6">
+              {statuses.map(s => (
+                <button key={s} onClick={() => setStatus(s)}
+                  className={`py-2.5 px-3 rounded-xl text-sm font-medium capitalize border-2 transition-all
+                    ${status === s
+                      ? 'border-teal bg-teal/10 text-teal font-semibold'
+                      : 'border-slate-200 text-slate-500 hover:border-slate-300'}`}>
+                  {s}
+                </button>
+              ))}
+            </div>
+            <div className="flex gap-3">
+              <button onClick={onClose} className="flex-1 py-2 text-sm font-medium text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors">
+                Cancel
+              </button>
+              <button onClick={handleUpdate} disabled={loading}
+                className="flex-1 py-2 text-sm font-medium text-white bg-teal hover:bg-teal-light rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-60">
+                {loading && <Spinner size="sm" />}
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       SIDEBAR
+    ───────────────────────────────────────────── */
+    function Sidebar({ route, navigate }) {
+      const { admin, logout } = useAuth();
+
+      const links = [
+        { path: '/dashboard',     icon: '📊', label: 'Overview' },
+        { path: '/appointments',  icon: '📋', label: 'Appointments' },
+        { path: '/pending',       icon: '⏳', label: 'Pending' },
+      ];
+
+      function handleLogout() {
+        logout();
+        navigate('/login');
+      }
+
+      return (
+        <aside className="fixed left-0 top-0 bottom-0 w-60 bg-deep flex flex-col z-40 shadow-2xl">
+          {/* Logo */}
+          <div className="px-5 py-6 border-b border-white/10">
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🦷</span>
+              <div>
+                <h2 className="text-white font-bold text-lg leading-tight">K-Dentrix</h2>
+                <p className="text-white/40 text-xs">Admin Panel</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Nav */}
+          <nav className="flex-1 py-4 px-3 space-y-1">
+            {links.map(l => {
+              const active = route === l.path || (l.path === '/appointments' && route === '/appointments');
+              return (
+                <button key={l.path} onClick={() => navigate(l.path)}
+                  className={`nav-link w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium
+                    ${active
+                      ? 'bg-white/10 text-white border-l-2 border-teal-light pl-[10px]'
+                      : 'text-white/60 hover:bg-white/5 hover:text-white/90'}`}>
+                  <span className="text-base w-5 text-center">{l.icon}</span>
+                  <span>{l.label}</span>
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* Footer */}
+          <div className="px-4 py-4 border-t border-white/10">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-8 h-8 rounded-full bg-teal/30 flex items-center justify-center text-teal-light font-bold text-sm">
+                {admin?.name?.[0]?.toUpperCase() || 'A'}
+              </div>
+              <div className="min-w-0">
+                <p className="text-white text-xs font-semibold truncate">{admin?.name || 'Admin'}</p>
+                <p className="text-white/40 text-xs truncate">{admin?.email || ''}</p>
+              </div>
+            </div>
+            <button onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 rounded-lg text-xs font-medium text-white/60 hover:text-white hover:bg-red-500/20 transition-colors">
+              <span>⎋</span> Sign Out
+            </button>
+          </div>
+        </aside>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       STAT CARD
+    ───────────────────────────────────────────── */
+    function StatCard({ label, value, icon, colorClass, bgClass }) {
+      return (
+        <div className={`bg-white rounded-2xl p-5 border border-slate-200 shadow-sm fade-in`}>
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">{label}</p>
+              <p className={`text-3xl font-bold ${colorClass}`}>{value ?? '—'}</p>
+            </div>
+            <div className={`w-11 h-11 rounded-xl flex items-center justify-center text-xl ${bgClass}`}>
+              {icon}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       LOGIN PAGE
+    ───────────────────────────────────────────── */
+    function LoginPage({ navigate }) {
+      const { login } = useAuth();
+      const toast = useToast();
+      const [email, setEmail]     = useState('');
+      const [password, setPassword] = useState('');
+      const [error, setError]     = useState('');
+      const [loading, setLoading] = useState(false);
+
+      async function handleLogin(e) {
+        e.preventDefault();
+        setError('');
+        if (!email || !password) { setError('Please enter your email and password.'); return; }
+        setLoading(true);
+        try {
+          const res = await fetch(`${API}/admin/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: email.trim(), password }),
+          });
+          const data = await res.json();
+          if (!data.success) { setError(data.message || 'Login failed.'); return; }
+          login(data.token, data.admin);
+          toast(`Welcome back, ${data.admin?.name || 'Admin'}!`, 'success');
+          navigate('/dashboard');
+        } catch {
+          setError('Connection error. Please check your network and try again.');
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-deep via-slate-900 to-[#1B3A3A] px-4">
+          <div className="w-full max-w-sm">
+            {/* Card */}
+            <div className="bg-white rounded-3xl shadow-2xl p-8 fade-in">
+              {/* Logo */}
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-teal/10 rounded-2xl mb-4">
+                  <span className="text-3xl">🦷</span>
+                </div>
+                <h1 className="text-2xl font-bold text-slate-800">K-Dentrix</h1>
+                <p className="text-slate-400 text-sm mt-1">Admin Dashboard — Staff Login</p>
+              </div>
+
+              <form onSubmit={handleLogin} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email Address</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="admin@kdentrix.com"
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-teal focus:ring-2 focus:ring-teal/10 transition-all"
+                    autoComplete="email"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-600 mb-1.5">Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-teal focus:ring-2 focus:ring-teal/10 transition-all"
+                    autoComplete="current-password"
+                  />
+                </div>
+
+                {error && (
+                  <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl px-3 py-2.5">
+                    <span className="mt-0.5">⚠</span>
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                <button type="submit" disabled={loading}
+                  className="w-full bg-teal hover:bg-teal-light text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-60 mt-2">
+                  {loading ? <><Spinner size="sm" /> Signing in…</> : 'Sign In to Dashboard'}
+                </button>
+              </form>
+            </div>
+
+            <p className="text-center text-white/30 text-xs mt-6">K-Dentrix Dental Clinic © {new Date().getFullYear()}</p>
+          </div>
+        </div>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       DASHBOARD PAGE
+    ───────────────────────────────────────────── */
+    function DashboardPage({ navigate }) {
+      const { token } = useAuth();
+      const toast = useToast();
+      const [data, setData]       = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [error, setError]     = useState('');
+
+      useEffect(() => {
+        async function load() {
+          setLoading(true);
+          setError('');
+          try {
+            const res = await fetch(`${API}/admin/dashboard`, { headers: authHeaders(token) });
+            const json = await res.json();
+            if (!json.success) { setError(json.message || 'Failed to load dashboard.'); return; }
+            setData(json);
+          } catch {
+            setError('Network error. Could not load dashboard data.');
+          } finally {
+            setLoading(false);
+          }
+        }
+        load();
+      }, [token]);
+
+      const stats = data?.stats || {};
+      const recent = data?.recent || [];
+
+      const statCards = [
+        { label: 'Total Appointments', value: stats.total,     icon: '📋', colorClass: 'text-teal',        bgClass: 'bg-teal/10' },
+        { label: 'Pending',            value: stats.pending,   icon: '⏳', colorClass: 'text-amber-600',   bgClass: 'bg-amber-50' },
+        { label: 'Confirmed',          value: stats.confirmed, icon: '✅', colorClass: 'text-emerald-600', bgClass: 'bg-emerald-50' },
+        { label: 'Completed',          value: stats.completed, icon: '🎉', colorClass: 'text-blue-600',    bgClass: 'bg-blue-50' },
+        { label: 'Cancelled',          value: stats.cancelled, icon: '❌', colorClass: 'text-red-600',     bgClass: 'bg-red-50' },
+      ];
+
+      return (
+        <div className="fade-in">
+          <div className="mb-6">
+            <h1 className="text-xl font-bold text-slate-800">Dashboard Overview</h1>
+            <p className="text-slate-400 text-sm mt-0.5">Welcome back! Here's what's happening at K-Dentrix.</p>
+          </div>
+
+          {loading && (
+            <div className="flex items-center justify-center py-20">
+              <Spinner size="lg" />
+            </div>
+          )}
+
+          {error && !loading && (
+            <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl p-6 text-sm text-center">
+              <p className="font-semibold mb-1">Failed to load dashboard</p>
+              <p className="text-red-500">{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && (
+            <>
+              {/* Stats Grid */}
+              <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                {statCards.map(c => <StatCard key={c.label} {...c} />)}
+              </div>
+
+              {/* Recent Bookings */}
+              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+                  <div>
+                    <h3 className="font-bold text-slate-800 text-sm">Recent Bookings</h3>
+                    <p className="text-slate-400 text-xs mt-0.5">Last 10 appointments</p>
+                  </div>
+                  <button onClick={() => navigate('/appointments')}
+                    className="text-xs font-semibold text-teal hover:text-teal-light transition-colors flex items-center gap-1">
+                    View All <span>→</span>
+                  </button>
+                </div>
+                <div className="overflow-x-auto">
+                  {recent.length === 0 ? (
+                    <div className="text-center py-12 text-slate-400 text-sm">No appointments yet.</div>
+                  ) : (
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="bg-slate-50">
+                          {['Ref', 'Patient', 'Service', 'Date & Time', 'Status', 'Actions'].map(h => (
+                            <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {recent.map(a => (
+                          <MiniRow key={a._id} appt={a} navigate={navigate} />
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      );
+    }
+
+    function MiniRow({ appt: a, navigate }) {
+      return (
+        <tr className="tbl-row">
+          <td className="px-4 py-3 font-mono text-xs font-semibold text-slate-700 whitespace-nowrap">{a.bookingRef}</td>
+          <td className="px-4 py-3 whitespace-nowrap">
+            <span className="font-medium text-slate-800">{a.firstName} {a.lastName}</span>
+          </td>
+          <td className="px-4 py-3 text-slate-500 whitespace-nowrap max-w-[140px] truncate">{a.service || '—'}</td>
+          <td className="px-4 py-3 whitespace-nowrap text-slate-600">
+            {a.date} <span className="text-slate-400">{a.time}</span>
+          </td>
+          <td className="px-4 py-3"><StatusBadge status={a.status} /></td>
+          <td className="px-4 py-3">
+            <button onClick={() => navigate('/appointments')}
+              className="text-xs text-teal hover:text-teal-light font-medium transition-colors">
+              Manage →
+            </button>
+          </td>
+        </tr>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       APPOINTMENTS PAGE
+    ───────────────────────────────────────────── */
+    function AppointmentsPage({ initialStatus = 'all' }) {
+      const { token } = useAuth();
+      const toast = useToast();
+
+      const [appointments, setAppointments] = useState([]);
+      const [loading, setLoading]           = useState(true);
+      const [error, setError]               = useState('');
+      const [search, setSearch]             = useState('');
+      const [statusFilter, setStatusFilter] = useState(initialStatus);
+      const [page, setPage]                 = useState(1);
+      const [totalPages, setTotalPages]     = useState(1);
+      const [total, setTotal]               = useState(0);
+
+      const [statusModal, setStatusModal]   = useState(null); // appointment object
+      const [deleteModal, setDeleteModal]   = useState(null); // appointment object
+      const [deleting, setDeleting]         = useState(false);
+
+      const searchTimer = useRef(null);
+
+      const fetchData = useCallback(async (pg = 1, st = statusFilter, q = search) => {
+        setLoading(true);
+        setError('');
+        try {
+          const params = new URLSearchParams({ page: pg, limit: 20 });
+          if (st && st !== 'all') params.set('status', st);
+          if (q.trim()) params.set('search', q.trim());
+          const res = await fetch(`${API}/admin/appointments?${params}`, { headers: authHeaders(token) });
+          const data = await res.json();
+          if (!data.success) { setError(data.message || 'Failed to load appointments.'); return; }
+          setAppointments(data.appointments || []);
+          setTotalPages(data.pages || 1);
+          setTotal(data.total || 0);
+          setPage(pg);
+        } catch {
+          setError('Network error. Could not load appointments.');
+        } finally {
+          setLoading(false);
+        }
+      }, [token, statusFilter, search]);
+
+      useEffect(() => { fetchData(1, initialStatus, ''); }, []);
+
+      function handleSearchChange(val) {
+        setSearch(val);
+        clearTimeout(searchTimer.current);
+        searchTimer.current = setTimeout(() => fetchData(1, statusFilter, val), 400);
+      }
+
+      function handleStatusFilterChange(val) {
+        setStatusFilter(val);
+        fetchData(1, val, search);
+      }
+
+      async function handleDelete() {
+        if (!deleteModal) return;
+        setDeleting(true);
+        try {
+          const res = await fetch(`${API}/admin/appointments/${deleteModal._id}`, {
+            method: 'DELETE',
+            headers: authHeaders(token),
+          });
+          const data = await res.json();
+          if (data.success) {
+            toast('Appointment deleted successfully.', 'success');
+            setDeleteModal(null);
+            fetchData(page, statusFilter, search);
+          } else {
+            toast(data.message || 'Delete failed.', 'error');
+          }
+        } catch {
+          toast('Network error. Delete failed.', 'error');
+        } finally {
+          setDeleting(false);
+        }
+      }
+
+      const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+      return (
+        <div className="fade-in">
+          <div className="mb-6">
+            <h1 className="text-xl font-bold text-slate-800">Appointments</h1>
+            <p className="text-slate-400 text-sm mt-0.5">
+              {total > 0 ? `${total} appointment${total !== 1 ? 's' : ''} found` : 'Manage all patient bookings'}
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+            {/* Filters */}
+            <div className="flex flex-wrap items-center gap-3 px-5 py-4 border-b border-slate-100">
+              {/* Search */}
+              <div className="relative flex-1 min-w-[200px]">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🔍</span>
+                <input
+                  type="text"
+                  value={search}
+                  onChange={e => handleSearchChange(e.target.value)}
+                  placeholder="Search by name, phone, or booking ref…"
+                  className="w-full pl-9 pr-4 py-2 text-sm border border-slate-200 rounded-xl outline-none focus:border-teal focus:ring-2 focus:ring-teal/10 transition-all"
+                />
+              </div>
+              {/* Status filter */}
+              <select
+                value={statusFilter}
+                onChange={e => handleStatusFilterChange(e.target.value)}
+                className="py-2 px-3 text-sm border border-slate-200 rounded-xl outline-none focus:border-teal focus:ring-2 focus:ring-teal/10 transition-all bg-white text-slate-700 font-medium">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+              {/* Refresh */}
+              <button onClick={() => fetchData(page, statusFilter, search)}
+                className="py-2 px-3 text-sm border border-slate-200 rounded-xl text-slate-500 hover:bg-slate-50 transition-colors">
+                ↻ Refresh
+              </button>
+            </div>
+
+            {/* Table */}
+            {loading ? (
+              <div className="flex items-center justify-center py-20">
+                <Spinner size="lg" />
+              </div>
+            ) : error ? (
+              <div className="text-center py-12 text-red-500 text-sm">
+                <p className="font-semibold mb-1">Error loading appointments</p>
+                <p className="text-red-400">{error}</p>
+              </div>
+            ) : appointments.length === 0 ? (
+              <div className="text-center py-16 text-slate-400">
+                <p className="text-4xl mb-3">📭</p>
+                <p className="font-semibold text-slate-500">No appointments found</p>
+                <p className="text-sm mt-1">Try adjusting your search or filter.</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-50">
+                      {['Booking Ref', 'Customer', 'Phone', 'Date & Time', 'Service', 'Status', 'Payment', 'Actions'].map(h => (
+                        <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {appointments.map(a => (
+                      <AppointmentRow
+                        key={a._id}
+                        appt={a}
+                        onStatusClick={() => setStatusModal(a)}
+                        onDeleteClick={() => setDeleteModal(a)}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
+            {/* Pagination */}
+            {!loading && !error && totalPages > 1 && (
+              <div className="flex items-center justify-between px-5 py-3 border-t border-slate-100 flex-wrap gap-3">
+                <p className="text-xs text-slate-400">
+                  Page {page} of {totalPages}
+                </p>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    onClick={() => fetchData(page - 1, statusFilter, search)}
+                    disabled={page === 1}
+                    className="px-3 py-1.5 text-xs font-medium border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                    ← Prev
+                  </button>
+                  {pageNumbers.map(n => (
+                    <button key={n} onClick={() => fetchData(n, statusFilter, search)}
+                      className={`w-8 h-8 text-xs font-medium rounded-lg transition-colors
+                        ${n === page
+                          ? 'bg-teal text-white'
+                          : 'border border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+                      {n}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => fetchData(page + 1, statusFilter, search)}
+                    disabled={page === totalPages}
+                    className="px-3 py-1.5 text-xs font-medium border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+                    Next →
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Status Modal */}
+          {statusModal && (
+            <StatusModal
+              appointment={statusModal}
+              onClose={() => setStatusModal(null)}
+              onUpdated={() => fetchData(page, statusFilter, search)}
+            />
+          )}
+
+          {/* Delete Confirm Modal */}
+          {deleteModal && (
+            <ConfirmModal
+              title="Delete Appointment"
+              message={`Are you sure you want to delete booking ${deleteModal.bookingRef} for ${deleteModal.firstName} ${deleteModal.lastName}? This action cannot be undone.`}
+              confirmLabel={deleting ? 'Deleting…' : 'Delete'}
+              confirmClass="bg-red-600 hover:bg-red-700 disabled:opacity-60"
+              onConfirm={handleDelete}
+              onCancel={() => setDeleteModal(null)}
+            />
+          )}
+        </div>
+      );
+    }
+
+    function AppointmentRow({ appt: a, onStatusClick, onDeleteClick }) {
+      const payStatus = a.depositPaid ? 'deposit_paid' : 'unpaid';
+      return (
+        <tr className="tbl-row">
+          <td className="px-4 py-3 whitespace-nowrap">
+            <span className="font-mono text-xs font-semibold text-slate-700 bg-slate-100 px-2 py-1 rounded-lg">{a.bookingRef}</span>
+          </td>
+          <td className="px-4 py-3 whitespace-nowrap">
+            <p className="font-semibold text-slate-800">{a.firstName} {a.lastName}</p>
+            {a.email && <p className="text-xs text-slate-400 mt-0.5">{a.email}</p>}
+          </td>
+          <td className="px-4 py-3 whitespace-nowrap text-slate-600 text-xs">{a.phone || '—'}</td>
+          <td className="px-4 py-3 whitespace-nowrap">
+            <p className="text-slate-700 font-medium">{a.date || '—'}</p>
+            <p className="text-xs text-slate-400">{a.time || ''}</p>
+          </td>
+          <td className="px-4 py-3 text-slate-500 max-w-[160px]">
+            <span className="truncate block text-xs">{a.service || '—'}</span>
+          </td>
+          <td className="px-4 py-3 whitespace-nowrap"><StatusBadge status={a.status} /></td>
+          <td className="px-4 py-3 whitespace-nowrap"><StatusBadge status={payStatus} type="payment" /></td>
+          <td className="px-4 py-3 whitespace-nowrap">
+            <div className="flex items-center gap-2">
+              <button onClick={onStatusClick}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-teal bg-teal/10 hover:bg-teal/20 rounded-lg transition-colors whitespace-nowrap">
+                ✏ Status
+              </button>
+              <button onClick={onDeleteClick}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                🗑
+              </button>
+            </div>
+          </td>
+        </tr>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       PROTECTED ROUTE WRAPPER
+    ───────────────────────────────────────────── */
+    function ProtectedRoute({ children, navigate }) {
+      const { token } = useAuth();
+      useEffect(() => {
+        if (!token) navigate('/login');
+      }, [token]);
+      if (!token) return null;
+      return children;
+    }
+
+    /* ─────────────────────────────────────────────
+       APP SHELL
+    ───────────────────────────────────────────── */
+    function App() {
+      const { route, navigate } = useRoute();
+      const { token } = useAuth();
+
+      // Redirect logic
+      useEffect(() => {
+        if (!token && route !== '/login') navigate('/login');
+        if (token && route === '/login') navigate('/dashboard');
+        if (token && route === '/') navigate('/dashboard');
+      }, [token, route]);
+
+      if (route === '/login' || !token) {
+        return <LoginPage navigate={navigate} />;
+      }
+
+      return (
+        <div className="flex min-h-screen">
+          <Sidebar route={route} navigate={navigate} />
+          <main className="ml-60 flex-1 p-7 min-h-screen">
+            {route === '/dashboard' && (
+              <ProtectedRoute navigate={navigate}>
+                <DashboardPage navigate={navigate} />
+              </ProtectedRoute>
+            )}
+            {route === '/appointments' && (
+              <ProtectedRoute navigate={navigate}>
+                <AppointmentsPage initialStatus="all" />
+              </ProtectedRoute>
+            )}
+            {route === '/pending' && (
+              <ProtectedRoute navigate={navigate}>
+                <AppointmentsPage initialStatus="pending" />
+              </ProtectedRoute>
+            )}
+            {route !== '/dashboard' && route !== '/appointments' && route !== '/pending' && (
+              <div className="flex items-center justify-center h-full py-20 text-slate-400 text-sm">
+                Page not found. <button onClick={() => navigate('/dashboard')} className="ml-2 text-teal underline">Go to Dashboard</button>
+              </div>
+            )}
+          </main>
+        </div>
+      );
+    }
+
+    /* ─────────────────────────────────────────────
+       ROOT RENDER
+    ───────────────────────────────────────────── */
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+      <AuthProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </AuthProvider>
+    );
+  </script>
+</body>
+</html>

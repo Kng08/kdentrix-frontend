@@ -1,0 +1,2098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Dentrix | Premium Dental Care – East Legon, Accra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f7f2ee;
+    --ivory: #efe6df;
+    --gold: #d38a5f;
+    --gold-light: #edb27c;
+    --deep: #1f2340;
+    --teal: #1f7a72;
+    --teal-light: #2f9a8d;
+    --teal-pale: #e2f1ec;
+    --text: #312c3a;
+    --muted: #766f7d;
+    --white: #FFFFFF;
+    --border: #ded3d8;
+    --berry: #b55d7a;
+    --berry-soft: #f4e3ea;
+    --ink-soft: #31456b;
+    --shadow: 0 10px 40px rgba(49,69,107,0.12);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.7;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(247,242,238,0.96);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 72px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+    text-decoration: none;
+  }
+  .nav-logo-icon {
+    width: 40px; height: 40px;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--ink-soft) 55%, var(--berry) 100%);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 8px 18px rgba(49,69,107,0.18);
+  }
+  .nav-logo-icon svg { width: 24px; height: 24px; color: white; }
+  .nav-logo-icon .logo-tooth {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.85;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .nav-logo-icon .logo-sparkle {
+    fill: currentColor;
+    opacity: 0.95;
+  }
+  .nav-logo-text { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 600; color: var(--deep); letter-spacing: 0.02em; }
+  .nav-logo-text span { color: var(--teal); }
+  .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+  .nav-links a { text-decoration: none; color: var(--text); font-size: 0.9rem; font-weight: 500; transition: color .2s; }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-links .nav-auth-item { margin-left: 4px; }
+  .nav-auth-btn {
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.72);
+    color: var(--deep);
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .nav-auth-btn:hover {
+    border-color: var(--teal);
+    color: var(--teal);
+    background: var(--white);
+  }
+  .nav-auth-btn.primary {
+    background: linear-gradient(135deg, var(--berry) 0%, var(--teal) 100%);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 10px 24px rgba(49,69,107,0.18);
+  }
+  .nav-auth-btn.primary:hover {
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 14px 26px rgba(49,69,107,0.22);
+  }
+  .auth-user-chip {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 10px 7px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.86);
+    border: 1px solid var(--border);
+  }
+  .auth-user-meta { display: flex; flex-direction: column; line-height: 1.1; }
+  .auth-user-label { font-size: 0.67rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .auth-user-name { font-size: 0.82rem; font-weight: 600; color: var(--deep); }
+  .auth-user-logout {
+    width: 32px; height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: var(--berry-soft);
+    color: var(--berry);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .auth-user-logout:hover { background: var(--berry); color: white; }
+  .auth-user-logout svg { width: 16px; height: 16px; stroke-width: 2.1; }
+  .nav-cta {
+    background: var(--teal); color: white;
+    padding: 10px 24px; border-radius: 50px;
+    font-size: 0.88rem; font-weight: 500;
+    text-decoration: none; transition: background .2s, transform .2s;
+  }
+  .nav-cta:hover { background: var(--teal-light); transform: translateY(-1px); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--deep); border-radius: 2px; transition: .3s; }
+
+  /* AUTH MODAL */
+  .auth-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(20, 24, 43, 0.52);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .auth-modal.open { display: flex; }
+  .auth-panel {
+    width: min(100%, 960px);
+    display: grid;
+    grid-template-columns: 0.95fr 1.05fr;
+    border-radius: 30px;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 0 30px 90px rgba(20,24,43,0.22);
+  }
+  .auth-brand {
+    padding: 42px 34px;
+    background: linear-gradient(160deg, var(--deep) 0%, var(--ink-soft) 48%, var(--teal) 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .auth-brand::before,
+  .auth-brand::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  .auth-brand::before { width: 180px; height: 180px; top: -32px; right: -48px; }
+  .auth-brand::after { width: 150px; height: 150px; bottom: -54px; left: -36px; }
+  .auth-brand-inner { position: relative; z-index: 1; }
+  .auth-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.14);
+    color: rgba(255,255,255,0.9);
+    font-size: 0.77rem;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .auth-badge svg { width: 16px; height: 16px; stroke-width: 2; }
+  .auth-brand h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3vw, 2.5rem);
+    line-height: 1.05;
+    margin-bottom: 14px;
+  }
+  .auth-brand p {
+    color: rgba(255,255,255,0.74);
+    font-size: 0.94rem;
+    max-width: 320px;
+  }
+  .auth-benefits {
+    margin-top: 28px;
+    display: grid;
+    gap: 12px;
+  }
+  .auth-benefit {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: rgba(255,255,255,0.88);
+    font-size: 0.88rem;
+  }
+  .auth-benefit svg { width: 17px; height: 17px; stroke-width: 2.3; }
+  .auth-content {
+    padding: 34px;
+    position: relative;
+  }
+  .auth-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: var(--berry-soft);
+    color: var(--berry);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .auth-close:hover { background: var(--berry); color: white; }
+  .auth-close svg { width: 18px; height: 18px; stroke-width: 2.1; }
+  .auth-tabs {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 6px;
+    border-radius: 999px;
+    background: var(--cream);
+    margin-bottom: 22px;
+  }
+  .auth-tab {
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: 10px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .auth-tab.active {
+    background: var(--white);
+    color: var(--deep);
+    box-shadow: 0 10px 24px rgba(49,69,107,0.08);
+  }
+  .auth-copy h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    color: var(--deep);
+    margin-bottom: 8px;
+  }
+  .auth-copy p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    margin-bottom: 22px;
+    max-width: 440px;
+  }
+  .auth-google-btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--deep);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .auth-google-btn:hover {
+    transform: translateY(-1px);
+    border-color: var(--berry);
+    box-shadow: 0 14px 24px rgba(49,69,107,0.1);
+  }
+  .auth-google-btn svg { width: 18px; height: 18px; }
+  .auth-divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin: 18px 0;
+  }
+  .auth-divider::before,
+  .auth-divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: var(--border);
+  }
+  .auth-form {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .auth-form.active { display: grid; }
+  .auth-field { display: flex; flex-direction: column; gap: 7px; }
+  .auth-field.full { grid-column: 1 / -1; }
+  .auth-field label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--deep);
+  }
+  .auth-field input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #fffdfd;
+    padding: 13px 15px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    outline: none;
+    transition: all .2s;
+  }
+  .auth-field input:focus {
+    border-color: var(--teal);
+    box-shadow: 0 0 0 4px rgba(31,122,114,0.1);
+  }
+  .auth-submit {
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    border: none;
+    border-radius: 16px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, var(--berry) 0%, var(--teal) 100%);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.94rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .22s;
+  }
+  .auth-submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 28px rgba(49,69,107,0.16);
+  }
+  .auth-helper {
+    grid-column: 1 / -1;
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+  .auth-footnote {
+    margin-top: 14px;
+    font-size: 0.79rem;
+    color: var(--muted);
+  }
+  .auth-footnote button {
+    border: none;
+    background: none;
+    color: var(--berry);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: linear-gradient(135deg, #f7f2ee 0%, #f4e3ea 45%, #ddeee7 100%);
+  }
+  .hero-blob {
+    position: absolute; right: -100px; top: 50%; transform: translateY(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(ellipse, rgba(181,93,122,0.16) 0%, transparent 70%);
+    border-radius: 50%; z-index: 0;
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.03;
+    background-image: linear-gradient(var(--teal) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--teal) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 640px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid var(--border);
+    padding: 6px 16px; border-radius: 50px;
+    font-size: 0.8rem; color: var(--teal); font-weight: 500;
+    margin-bottom: 28px; box-shadow: 0 2px 12px rgba(49,69,107,0.1);
+  }
+  .hero-badge::before { content: '●'; font-size: 0.6rem; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 600; line-height: 1.15;
+    color: var(--deep); margin-bottom: 20px;
+  }
+  .hero h1 em { color: var(--teal); font-style: italic; }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 500px; margin-bottom: 36px; }
+  .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--teal); color: white;
+    padding: 14px 32px; border-radius: 50px;
+    text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    transition: all .25s; box-shadow: 0 4px 20px rgba(49,69,107,0.24);
+  }
+  .btn-primary:hover { background: var(--teal-light); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(49,69,107,0.3); }
+  .btn-secondary {
+    background: transparent; color: var(--teal);
+    padding: 14px 32px; border-radius: 50px;
+    border: 1.5px solid var(--teal);
+    text-decoration: none; font-weight: 500; font-size: 0.95rem;
+    transition: all .25s;
+  }
+  .btn-secondary:hover { background: var(--teal-pale); }
+  .hero-stats {
+    display: flex; gap: 40px; margin-top: 56px;
+    padding-top: 40px; border-top: 1px solid var(--border);
+  }
+  .stat-item { text-align: left; }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 600; color: var(--teal); line-height: 1;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+  .hero-image-col {
+    position: absolute; right: 0; top: 0; bottom: 0;
+    width: 48%; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 100px 48px 80px;
+  }
+  .hero-card-stack { position: relative; width: 100%; max-width: 400px; }
+  .hero-main-card {
+    background: white; border-radius: 24px;
+    padding: 32px; box-shadow: 0 20px 60px rgba(49,69,107,0.16);
+    position: relative; z-index: 2;
+  }
+  .hero-card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+  .hero-avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 1.3rem;
+    color: white; font-weight: 600;
+  }
+  .hero-card-name { font-weight: 600; font-size: 0.95rem; }
+  .hero-card-role { font-size: 0.8rem; color: var(--muted); }
+  .card-rating { display: flex; gap: 3px; margin-bottom: 4px; }
+  .star { color: var(--gold); font-size: 0.9rem; }
+  .hero-card-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; font-style: italic; }
+  .floating-badge {
+    position: absolute; background: white; border-radius: 16px;
+    padding: 12px 18px; box-shadow: 0 10px 30px rgba(31,35,64,0.14);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.82rem; font-weight: 500;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+  .badge-patients { top: -20px; right: -30px; z-index: 3; animation-delay: 0s; }
+  .badge-exp { bottom: -20px; left: -30px; z-index: 3; animation-delay: 1.5s; }
+  .badge-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--teal); }
+  .badge-icon svg { width: 20px; height: 20px; stroke-width: 2; }
+
+  /* ── SECTIONS COMMON ── */
+  section { padding: 96px 48px; }
+  .section-label {
+    font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em;
+    color: var(--teal); font-weight: 600; margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 600; line-height: 1.2;
+    color: var(--deep); margin-bottom: 16px;
+  }
+  .section-sub { color: var(--muted); max-width: 520px; font-size: 0.97rem; margin-bottom: 48px; }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* ── SERVICES ── */
+  #services { background: var(--white); }
+  .services-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    margin-top: 16px;
+  }
+  .service-card {
+    background: var(--cream); border-radius: 20px;
+    padding: 32px; border: 1px solid var(--border);
+    transition: all .3s; cursor: default; position: relative; overflow: hidden;
+  }
+  .service-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--teal) 0%, var(--teal-light) 100%);
+    opacity: 0; transition: opacity .3s; border-radius: 20px;
+  }
+  .service-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(49,69,107,0.14); border-color: var(--teal); }
+  .service-card:hover::before { opacity: 0.04; }
+  .service-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--teal-pale); display: flex; align-items: center; justify-content: center;
+    color: var(--teal); margin-bottom: 20px; transition: background .3s, color .3s;
+  }
+  .service-icon svg { width: 24px; height: 24px; stroke-width: 2; }
+  .service-card:hover .service-icon { background: var(--teal); }
+  .service-card:hover .service-icon { color: white; }
+  .service-title { font-weight: 600; font-size: 1rem; margin-bottom: 10px; color: var(--deep); position: relative; z-index: 1; }
+  .service-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; position: relative; z-index: 1; }
+  .service-price { font-size: 0.8rem; color: var(--teal); font-weight: 600; margin-top: 14px; position: relative; z-index: 1; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--cream); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; }
+  .about-visual { position: relative; }
+  .about-photo-wrap {
+    border-radius: 24px; overflow: hidden;
+    background: linear-gradient(135deg, var(--berry) 0%, var(--deep) 55%, var(--teal) 100%);
+    height: 480px; display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .clinic-illustration { text-align: center; color: white; padding: 40px; }
+  .clinic-illustration .big-tooth {
+    width: 80px; height: 80px; margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .clinic-illustration .big-tooth svg { width: 80px; height: 80px; stroke-width: 1.7; }
+  .clinic-illustration h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; margin-bottom: 8px; }
+  .clinic-illustration p { font-size: 0.88rem; opacity: 0.8; }
+  .about-badge-float {
+    position: absolute; bottom: 24px; left: -24px;
+    background: white; border-radius: 16px; padding: 16px 20px;
+    box-shadow: 0 10px 30px rgba(31,35,64,0.14);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .ab-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--gold); }
+  .ab-icon svg { width: 24px; height: 24px; stroke-width: 2; }
+  .ab-text strong { display: block; font-size: 0.9rem; font-weight: 600; }
+  .ab-text span { font-size: 0.78rem; color: var(--muted); }
+  .about-features { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+  .feat-item { display: flex; gap: 14px; align-items: flex-start; }
+  .feat-check {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: var(--teal-pale); display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: var(--teal);
+  }
+  .feat-check svg { width: 16px; height: 16px; stroke-width: 2.6; }
+  .feat-text strong { display: block; font-size: 0.92rem; font-weight: 600; margin-bottom: 2px; }
+  .feat-text span { font-size: 0.84rem; color: var(--muted); }
+
+  /* ── TEAM ── */
+  #team { background: var(--white); }
+  .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .team-card {
+    background: var(--cream); border-radius: 20px;
+    overflow: hidden; border: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .team-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .team-photo {
+    height: 200px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem; position: relative;
+  }
+  .team-card:nth-child(1) .team-photo { background: linear-gradient(135deg, #1f7a72, #2f9a8d); }
+  .team-card:nth-child(2) .team-photo { background: linear-gradient(135deg, #31456b, #1f7a72); }
+  .team-card:nth-child(3) .team-photo { background: linear-gradient(135deg, #1f2340, #5d638c); }
+  .team-card:nth-child(4) .team-photo { background: linear-gradient(135deg, #b55d7a, #d38a5f); }
+  .team-initials {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 600; color: white;
+    border: 2px solid rgba(255,255,255,0.4);
+  }
+  .team-info { padding: 20px; }
+  .team-name { font-weight: 600; font-size: 0.97rem; margin-bottom: 4px; }
+  .team-role { font-size: 0.82rem; color: var(--teal); margin-bottom: 8px; font-weight: 500; }
+  .team-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── BOOKING / AI ── */
+  #booking { background: linear-gradient(135deg, var(--deep) 0%, var(--ink-soft) 48%, #204f60 100%); color: white; position: relative; overflow: hidden; }
+  #booking::before {
+    content: ''; position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse, rgba(181,93,122,0.24), transparent 70%);
+    border-radius: 50%;
+  }
+  .booking-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center; position: relative; z-index: 1; }
+  #booking .section-title { color: white; }
+  #booking .section-label { color: var(--gold-light); }
+  #booking .section-sub { color: rgba(255,255,255,0.65); }
+  .booking-form {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px; padding: 36px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+  .form-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 24px; color: white; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 500; margin-bottom: 6px; color: rgba(255,255,255,0.7); }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px; padding: 12px 14px;
+    color: white; font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    outline: none; transition: border .2s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--teal-light);
+    background: rgba(255,255,255,0.12);
+  }
+  .form-group select option { background: var(--deep); color: white; }
+  .form-group textarea { height: 100px; resize: none; }
+  .btn-book {
+    width: 100%; background: var(--teal); color: white;
+    border: none; border-radius: 50px; padding: 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; transition: all .25s; margin-top: 8px;
+  }
+  .btn-book:hover { background: var(--teal-light); transform: translateY(-2px); }
+
+  /* ── AI ASSISTANT ── */
+  .ai-assistant-wrap { position: relative; z-index: 1; }
+  .ai-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 24px; overflow: hidden;
+  }
+  .ai-header {
+    background: rgba(181,93,122,0.28);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+  .ai-avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--teal); display: flex; align-items: center; justify-content: center;
+    color: white; flex-shrink: 0;
+  }
+  .ai-avatar svg { width: 18px; height: 18px; stroke-width: 2.2; }
+  .ai-title { font-weight: 600; font-size: 0.92rem; }
+  .ai-status { font-size: 0.75rem; color: rgba(255,255,255,0.6); }
+  .ai-online { display: inline-block; width: 7px; height: 7px; background: #4CAF50; border-radius: 50%; margin-right: 5px; }
+  .ai-messages { height: 280px; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+  .ai-messages::-webkit-scrollbar { width: 4px; }
+  .ai-messages::-webkit-scrollbar-track { background: transparent; }
+  .ai-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  .msg { max-width: 85%; font-size: 0.86rem; line-height: 1.55; }
+  .msg-bot {
+    background: rgba(255,255,255,0.1); border-radius: 4px 16px 16px 16px;
+    padding: 10px 14px; color: rgba(255,255,255,0.9);
+    align-self: flex-start;
+  }
+  .msg-user {
+    background: var(--teal); border-radius: 16px 4px 16px 16px;
+    padding: 10px 14px; color: white;
+    align-self: flex-end;
+  }
+  .typing-dots { display: flex; gap: 4px; padding: 12px 14px; align-self: flex-start; background: rgba(255,255,255,0.1); border-radius: 4px 16px 16px 16px; }
+  .dot { width: 6px; height: 6px; background: rgba(255,255,255,0.5); border-radius: 50%; animation: bounce 1.2s infinite; }
+  .dot:nth-child(2) { animation-delay: .2s; }
+  .dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+  .ai-input-wrap {
+    display: flex; gap: 10px; padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .ai-input {
+    flex: 1; background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px; padding: 10px 16px;
+    color: white; font-family: 'DM Sans', sans-serif; font-size: 0.86rem;
+    outline: none;
+  }
+  .ai-input::placeholder { color: rgba(255,255,255,0.35); }
+  .ai-input:focus { border-color: var(--teal-light); }
+  .ai-send {
+    width: 38px; height: 38px; background: var(--teal);
+    border: none; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: white; flex-shrink: 0;
+    transition: background .2s;
+  }
+  .ai-send svg { width: 18px; height: 18px; stroke-width: 2.2; }
+  .ai-send:hover { background: var(--teal-light); }
+  .quick-btns { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 16px 14px; }
+  .quick-btn {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 50px; padding: 6px 12px;
+    font-size: 0.75rem; color: rgba(255,255,255,0.75);
+    cursor: pointer; transition: all .2s; font-family: 'DM Sans', sans-serif;
+  }
+  .quick-btn:hover { background: rgba(181,93,122,0.3); color: white; border-color: var(--gold-light); }
+
+  /* ── HOURS & CONTACT ── */
+  #info { background: var(--cream); }
+  .info-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 32px; }
+  .info-card { background: white; border-radius: 20px; padding: 32px; border: 1px solid var(--border); }
+  .info-card-title { font-weight: 600; font-size: 1rem; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+  .info-card-title svg { width: 20px; height: 20px; color: var(--teal); stroke-width: 2; flex-shrink: 0; }
+  .hours-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .hours-list li { display: flex; justify-content: space-between; font-size: 0.88rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .hours-list li:last-child { border-bottom: none; padding-bottom: 0; }
+  .hours-list .day { color: var(--text); font-weight: 500; }
+  .hours-list .time { color: var(--muted); }
+  .hours-list .closed { color: #c85c5c; font-weight: 500; }
+  .contact-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+  .contact-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.88rem; }
+  .contact-list .c-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--teal); flex-shrink: 0; margin-top: 1px; }
+  .contact-list .c-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+  .contact-list strong { display: block; font-weight: 600; margin-bottom: 2px; }
+  .contact-list span, .contact-list a { color: var(--muted); text-decoration: none; }
+  .contact-list a:hover { color: var(--teal); }
+  .emergency-box {
+    background: linear-gradient(135deg, rgba(211,138,95,0.18), rgba(181,93,122,0.12));
+    border: 1px solid rgba(181,93,122,0.28);
+    border-radius: 12px; padding: 14px 16px;
+    display: flex; gap: 10px; align-items: center;
+    margin-top: 16px;
+  }
+  .emergency-box .e-icon { display: inline-flex; align-items: center; justify-content: center; color: #b55d52; }
+  .emergency-box .e-icon svg { width: 22px; height: 22px; stroke-width: 2.2; }
+  .emergency-box strong { display: block; font-size: 0.82rem; font-weight: 600; color: #b55d52; }
+  .emergency-box a { font-size: 0.9rem; font-weight: 700; color: #b55d52; text-decoration: none; }
+  .map-placeholder {
+    border-radius: 16px; overflow: hidden;
+    background: linear-gradient(135deg, #e2f1ec 0%, #f4e3ea 100%);
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    margin-top: 16px; border: 1px solid var(--border); flex-direction: column; gap: 8px;
+  }
+  .map-placeholder span { display: inline-flex; align-items: center; justify-content: center; color: var(--teal); }
+  .map-placeholder span svg { width: 32px; height: 32px; stroke-width: 1.9; }
+  .map-placeholder p { font-size: 0.82rem; color: var(--teal); font-weight: 500; text-align: center; padding: 0 16px; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { background: white; }
+  .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .testi-card {
+    background: var(--cream); border-radius: 20px;
+    padding: 28px; border: 1px solid var(--border);
+  }
+  .testi-stars { display: flex; gap: 3px; margin-bottom: 16px; }
+  .testi-text { font-size: 0.9rem; color: var(--text); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+  .testi-author { display: flex; align-items: center; gap: 12px; }
+  .testi-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 600;
+    color: white;
+  }
+  .testi-name { font-weight: 600; font-size: 0.88rem; }
+  .testi-loc { font-size: 0.78rem; color: var(--muted); }
+
+  /* ── FAQ ── */
+  #faq { background: var(--cream); }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .faq-item {
+    background: white; border-radius: 16px;
+    border: 1px solid var(--border); overflow: hidden;
+  }
+  .faq-q {
+    padding: 20px 24px; font-weight: 600; font-size: 0.92rem;
+    cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    transition: background .2s;
+  }
+  .faq-q:hover { background: var(--teal-pale); }
+  .faq-q .arrow { color: var(--teal); font-size: 1rem; transition: transform .3s; }
+  .faq-item.open .arrow { transform: rotate(180deg); }
+  .faq-a {
+    padding: 0 24px; max-height: 0; overflow: hidden;
+    font-size: 0.87rem; color: var(--muted); line-height: 1.7;
+    transition: max-height .35s ease, padding .35s ease;
+  }
+  .faq-item.open .faq-a { max-height: 200px; padding: 0 24px 20px; }
+
+  /* ── INSURANCE ── */
+  #insurance { background: white; text-align: center; }
+  .insurance-logos { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 40px; }
+  .insurance-tag {
+    background: var(--cream); border: 1px solid var(--border);
+    border-radius: 50px; padding: 10px 24px;
+    font-size: 0.88rem; font-weight: 500; color: var(--text);
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: all .2s;
+  }
+  .insurance-tag:hover { background: var(--teal-pale); border-color: var(--teal); color: var(--teal); }
+  .insurance-tag svg { width: 16px; height: 16px; stroke-width: 2; flex-shrink: 0; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep); color: rgba(255,255,255,0.75);
+    padding: 64px 48px 32px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+  .footer-brand .nav-logo-text { color: white; }
+  .footer-desc { font-size: 0.85rem; margin-top: 12px; line-height: 1.7; color: rgba(255,255,255,0.55); }
+  .footer-col h4 { font-size: 0.88rem; font-weight: 600; color: white; margin-bottom: 16px; letter-spacing: 0.05em; }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.85rem; transition: color .2s; }
+  .footer-links a:hover { color: var(--teal-light); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 24px; display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: rgba(255,255,255,0.4);
+  }
+  .footer-bottom a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .footer-socials { display: flex; gap: 12px; }
+  .social-btn {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.6); text-decoration: none;
+    transition: all .2s;
+  }
+  .social-btn:hover { background: var(--teal); color: white; }
+  .social-btn svg { width: 16px; height: 16px; stroke-width: 2; }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed; bottom: 32px; right: 32px; z-index: 9999;
+    background: var(--teal); color: white;
+    padding: 14px 24px; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 500;
+    transform: translateY(100px); opacity: 0;
+    transition: all .4s cubic-bezier(.34,1.56,.64,1);
+    box-shadow: 0 8px 30px rgba(49,69,107,0.35);
+    max-width: 320px;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 960px) {
+    nav { padding: 0 24px; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 72px 24px; }
+    #hero { padding: 100px 24px 60px; }
+    .hero-image-col { display: none; }
+    .hero-stats { gap: 24px; flex-wrap: wrap; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-photo-wrap { height: 300px; }
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .booking-grid { grid-template-columns: 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .faq-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .auth-panel { grid-template-columns: 1fr; }
+    .auth-brand { display: none; }
+  }
+  @media (max-width: 600px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .auth-content { padding: 26px 18px; }
+    .auth-form { grid-template-columns: 1fr; }
+    .auth-tabs { width: 100%; }
+    .auth-tab { padding-inline: 10px; }
+  }
+
+/* New CSS for inline styles */
+.muted-text { color: var(--muted); }
+.about-p { color: var(--muted); font-size: 0.97rem; line-height: 1.8; }
+.about-p.mb24 { margin-bottom: 24px; }
+.about-p.mb32 { margin-bottom: 32px; }
+.contact-flex { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
+.contact-item { display: flex; gap: 12px; align-items: center; }
+.contact-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; }
+.contact-icon svg { width: 18px; height: 18px; stroke-width: 2.2; }
+.contact-icon.phone { background: rgba(47,154,141,0.34); }
+.contact-icon.emergency { background: rgba(181,93,122,0.34); }
+.contact-icon.email { background: rgba(49,69,107,0.34); }
+.contact-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-bottom: 2px; }
+.contact-link { color: white; text-decoration: none; font-weight: 600; font-size: 1rem; }
+.contact-link.emergency { color: #f4b0b0; }
+.contact-link.email { font-weight: 500; font-size: 0.9rem; }
+.pay-deposit { background: var(--gold); margin-top: 10px; display: none; }
+.ai-margin { margin-top: 80px; }
+.ai-label { color: var(--gold-light); }
+.ai-title { color: white; }
+.ai-desc { color: rgba(255,255,255,0.6); max-width: 520px; margin-bottom: 40px; }
+.location-p { font-size: 0.86rem; color: var(--muted); margin-bottom: 14px; }
+.map-strong { color: var(--deep); }
+.map-link { display: inline-block; margin-top: 14px; font-size: 0.84rem; color: var(--teal); font-weight: 500; text-decoration: none; }
+.testi-avatar-ao { background: linear-gradient(135deg,#1f7a72,#2f9a8d); }
+.testi-avatar-kd { background: linear-gradient(135deg,#31456b,#1f7a72); }
+.testi-avatar-em { background: linear-gradient(135deg,#b55d7a,#d38a5f); }
+.insurance-sub { margin: 0 auto 0; }
+.footer-logo { display: inline-flex; margin-bottom: 0; }
+.footer-socials-margin { margin-top: 20px; }
+.footer-bottom-flex { display: flex; gap: 16px; }
+.footer-link-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; margin-right: 8px;
+  vertical-align: text-bottom;
+}
+.footer-link-icon svg { width: 16px; height: 16px; stroke-width: 2; }
+
+/* Fix backdrop-filter for Safari */
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path class="logo-tooth" d="M12 3.25c-3.85 0-6.25 2.63-6.25 5.99 0 2.35.78 4.16 1.58 5.85.6 1.28 1 2.83 1.48 4.2.24.7.61 1.46 1.49 1.46.98 0 1.34-.9 1.57-1.78l.42-1.69c.16-.63.43-.98.92-.98s.76.35.92.98l.42 1.69c.23.88.59 1.78 1.57 1.78.88 0 1.25-.76 1.49-1.46.48-1.37.88-2.92 1.48-4.2.8-1.69 1.58-3.5 1.58-5.85 0-3.36-2.4-5.99-6.25-5.99Z"/>
+        <path class="logo-sparkle" d="M16.85 4.15l.42 1.19 1.2.42-1.2.43-.42 1.18-.43-1.18-1.18-.43 1.18-.42.43-1.19Z"/>
+      </svg>
+    </div>
+    <span class="nav-logo-text">K-<span>Dentrix</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#team">Our Team</a></li>
+    <li><a href="#info">Contact</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li class="nav-auth-item"><button class="nav-auth-btn" type="button" onclick="openAuthModal('signin')">Sign In</button></li>
+    <li class="nav-auth-item"><button class="nav-auth-btn primary" type="button" onclick="openAuthModal('signup')">Sign Up</button></li>
+    <li class="nav-auth-item">
+      <div class="auth-user-chip" id="authUserChip">
+        <div class="auth-user-meta">
+          <span class="auth-user-label">Signed In</span>
+          <span class="auth-user-name" id="authUserName">Guest</span>
+        </div>
+        <button class="auth-user-logout" type="button" onclick="logoutUser()" aria-label="Log out">
+          <i data-lucide="log-out" aria-hidden="true"></i>
+        </button>
+      </div>
+    </li>
+    <li><a href="#booking" class="nav-cta">Book Appointment</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- AUTH MODAL -->
+<div class="auth-modal" id="authModal" aria-hidden="true">
+  <div class="auth-panel" role="dialog" aria-modal="true" aria-labelledby="authHeading">
+    <div class="auth-brand">
+      <div class="auth-brand-inner">
+        <div class="auth-badge"><i data-lucide="shield-check" aria-hidden="true"></i> Secure Patient Access</div>
+        <h3>Welcome back to your dental care home.</h3>
+        <p>Sign in to manage future bookings faster, save your details, and keep your clinic experience simple and smooth.</p>
+        <div class="auth-benefits">
+          <div class="auth-benefit"><i data-lucide="calendar-check-2" aria-hidden="true"></i> Faster appointment requests</div>
+          <div class="auth-benefit"><i data-lucide="badge-check" aria-hidden="true"></i> Saved patient details</div>
+          <div class="auth-benefit"><i data-lucide="message-square-heart" aria-hidden="true"></i> Easy follow-up support</div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-content">
+      <button class="auth-close" type="button" onclick="closeAuthModal()" aria-label="Close sign in dialog">
+        <i data-lucide="x" aria-hidden="true"></i>
+      </button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" type="button" id="signinTabBtn" onclick="setAuthTab('signin')">Sign In</button>
+        <button class="auth-tab" type="button" id="signupTabBtn" onclick="setAuthTab('signup')">Sign Up</button>
+      </div>
+      <div class="auth-copy">
+        <h3 id="authHeading">Access Your Account</h3>
+        <p id="authSubcopy">Use your existing email and password, or continue with Google once OAuth is connected.</p>
+      </div>
+      <button class="auth-google-btn" type="button" onclick="handleGoogleAuth()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#EA4335" d="M12 10.2v3.96h5.52c-.24 1.28-.96 2.36-2.04 3.08l3.3 2.56c1.92-1.76 3.02-4.36 3.02-7.44 0-.72-.06-1.42-.2-2.1H12Z"/>
+          <path fill="#34A853" d="M12 22c2.7 0 4.96-.88 6.62-2.38l-3.3-2.56c-.92.62-2.1.98-3.32.98-2.54 0-4.7-1.72-5.48-4.02H3.1v2.64A9.99 9.99 0 0 0 12 22Z"/>
+          <path fill="#4A90E2" d="M6.52 14.02A5.97 5.97 0 0 1 6.2 12c0-.7.12-1.38.32-2.02V7.34H3.1A9.99 9.99 0 0 0 2 12c0 1.6.38 3.12 1.1 4.66l3.42-2.64Z"/>
+          <path fill="#FBBC05" d="M12 5.96c1.46 0 2.76.5 3.78 1.48l2.84-2.84C16.94 3 14.68 2 12 2A9.99 9.99 0 0 0 3.1 7.34l3.42 2.64C7.3 7.68 9.46 5.96 12 5.96Z"/>
+        </svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider">or use email</div>
+
+      <form class="auth-form active" id="signinForm" onsubmit="submitSignIn(event)">
+        <div class="auth-field full">
+          <label for="signinEmail">Email Address</label>
+          <input id="signinEmail" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="auth-field full">
+          <label for="signinPassword">Password</label>
+          <input id="signinPassword" type="password" placeholder="Enter your password" required>
+        </div>
+        <button class="auth-submit" type="submit">Sign In Securely</button>
+        <div class="auth-helper">Use your existing K-Dentrix email account to continue. If you're new here, create an account in a few seconds.</div>
+      </form>
+
+      <form class="auth-form" id="signupForm" onsubmit="submitSignUp(event)">
+        <div class="auth-field full">
+          <label for="signupName">Full Name</label>
+          <input id="signupName" type="text" placeholder="Kwame Mensah" required>
+        </div>
+        <div class="auth-field full">
+          <label for="signupEmail">Email Address</label>
+          <input id="signupEmail" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="auth-field">
+          <label for="signupPassword">Password</label>
+          <input id="signupPassword" type="password" placeholder="Create a password" required>
+        </div>
+        <div class="auth-field">
+          <label for="signupConfirmPassword">Confirm Password</label>
+          <input id="signupConfirmPassword" type="password" placeholder="Repeat password" required>
+        </div>
+        <button class="auth-submit" type="submit">Create My Account</button>
+        <div class="auth-helper">No Google account? No problem. You can sign up normally with your name, email, and password.</div>
+      </form>
+
+      <div class="auth-footnote" id="authFootnote">
+        New to K-Dentrix?
+        <button type="button" onclick="setAuthTab('signup')">Create an account</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-blob"></div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Accra's Premier Dental Clinic</div>
+    <h1 class="hero">Your <em>Smile</em><br>Deserves<br>the Best Care</h1>
+    <p>K-Dentrix is East Legon's trusted dental home — offering advanced, compassionate care for your entire family in a calm, modern setting.</p>
+    <div class="hero-btns">
+      <a href="#booking" class="btn-primary">Book an Appointment</a>
+      <a href="#services" class="btn-secondary">Explore Services</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">5,000+</div>
+        <div class="stat-label">Patients Treated</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Years of Excellence</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Patient Satisfaction</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-image-col">
+    <div class="hero-card-stack">
+      <div class="hero-main-card">
+        <div class="hero-card-header">
+          <div class="hero-avatar">AK</div>
+          <div>
+            <div class="hero-card-name">Abena Korantema</div>
+            <div class="hero-card-role">Verified Patient</div>
+          </div>
+        </div>
+        <div class="card-rating"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+        <p class="hero-card-text">"K-Dentrix completely transformed my smile. The team is so professional and gentle — I don't dread dental visits anymore!"</p>
+      </div>
+      <div class="floating-badge badge-patients">
+        <span class="badge-icon"><i data-lucide="sparkles" aria-hidden="true"></i></span>
+        <div><strong>5,000+ Smiles</strong><br><small class="muted-text">Restored & brightened</small></div>
+      </div>
+      <div class="floating-badge badge-exp">
+        <span class="badge-icon"><i data-lucide="award" aria-hidden="true"></i></span>
+        <div><strong>Award-Winning</strong><br><small class="muted-text">Dental Excellence</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="container">
+    <div class="section-label">What We Offer</div>
+    <h2 class="section-title">Comprehensive Dental Services</h2>
+    <p class="section-sub">From routine check-ups to complex cosmetic transformations, we provide expert care tailored to every patient's unique needs.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="heart-pulse" aria-hidden="true"></i></div>
+        <div class="service-title">General Dentistry</div>
+        <div class="service-desc">Routine examinations, professional cleaning, fillings, and preventive care to maintain optimal oral health year-round.</div>
+        <div class="service-price">From GHS 150</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="sparkles" aria-hidden="true"></i></div>
+        <div class="service-title">Teeth Whitening</div>
+        <div class="service-desc">Professional-grade whitening treatments that remove stains and brighten your smile by up to 8 shades.</div>
+        <div class="service-price">From GHS 350</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="crosshair" aria-hidden="true"></i></div>
+        <div class="service-title">Dental Implants</div>
+        <div class="service-desc">Permanent, natural-looking tooth replacements using titanium implants and ceramic crowns for a lasting solution.</div>
+        <div class="service-price">From GHS 2,500</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="smile" aria-hidden="true"></i></div>
+        <div class="service-title">Orthodontics & Braces</div>
+        <div class="service-desc">Traditional braces and clear aligners (Invisalign-style) to correct misalignment and achieve a perfectly straight smile.</div>
+        <div class="service-price">From GHS 1,200</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="shield-check" aria-hidden="true"></i></div>
+        <div class="service-title">Root Canal Treatment</div>
+        <div class="service-desc">Pain-free root canal therapy using modern rotary systems to save infected teeth quickly and comfortably.</div>
+        <div class="service-price">From GHS 500</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="baby" aria-hidden="true"></i></div>
+        <div class="service-title">Pediatric Dentistry</div>
+        <div class="service-desc">Gentle, child-friendly dental care in a welcoming environment — building healthy habits that last a lifetime.</div>
+        <div class="service-price">From GHS 100</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="gem" aria-hidden="true"></i></div>
+        <div class="service-title">Porcelain Veneers</div>
+        <div class="service-desc">Ultra-thin porcelain shells customised to your face shape, correcting chips, gaps, and discolouration instantly.</div>
+        <div class="service-price">From GHS 800/tooth</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="stethoscope" aria-hidden="true"></i></div>
+        <div class="service-title">Oral Surgery</div>
+        <div class="service-desc">Wisdom tooth extractions, bone grafting, and minor surgical procedures performed with precision and care.</div>
+        <div class="service-price">From GHS 300</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon"><i data-lucide="scan-search" aria-hidden="true"></i></div>
+        <div class="service-title">Digital X-Rays & Scanning</div>
+        <div class="service-desc">Low-radiation digital imaging and 3D scanning for accurate diagnosis and treatment planning — no guesswork.</div>
+        <div class="service-price">From GHS 80</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-visual">
+        <div class="about-photo-wrap">
+          <div class="clinic-illustration">
+            <span class="big-tooth"><i data-lucide="heart-pulse" aria-hidden="true"></i></span>
+            <h3>K-Dentrix Clinic</h3>
+            <p>East Legon, American House<br>Accra, Ghana</p>
+          </div>
+        </div>
+        <div class="about-badge-float">
+          <span class="ab-icon"><i data-lucide="award" aria-hidden="true"></i></span>
+          <div class="ab-text">
+            <strong>Accreditation Certified</strong>
+            <span>Ghana Health Service Approved</span>
+          </div>
+        </div>
+      </div>
+      <div class="about-content">
+        <div class="section-label">About K-Dentrix</div>
+        <h2 class="section-title">More Than a Dental Clinic — A Place You Trust</h2>
+        <p class="about-p mb24">Founded with a mission to make world-class dental care accessible in Accra, K-Dentrix has been the smile destination for families across East Legon and Greater Accra for over a decade. We combine modern technology with genuine compassion.</p>
+        <p class="about-p mb32">Our state-of-the-art facility on American House Road features the latest digital imaging equipment, air-conditioned treatment rooms, and sterilisation standards that exceed international protocols.</p>
+        <div class="about-features">
+          <div class="feat-item">
+            <div class="feat-check"><i data-lucide="check" aria-hidden="true"></i></div>
+            <div class="feat-text">
+              <strong>ISO-Standard Sterilisation</strong>
+              <span>Every instrument and surface is sterilised to international standards before each patient.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-check"><i data-lucide="check" aria-hidden="true"></i></div>
+            <div class="feat-text">
+              <strong>Digital Dental Technology</strong>
+              <span>3D cone-beam CT scans, digital X-rays, and intraoral cameras for pinpoint-accurate diagnoses.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-check"><i data-lucide="check" aria-hidden="true"></i></div>
+            <div class="feat-text">
+              <strong>Pain-Free Treatment Philosophy</strong>
+              <span>Computer-controlled anaesthetic delivery ensures all procedures are as comfortable as possible.</span>
+            </div>
+          </div>
+          <div class="feat-item">
+            <div class="feat-check"><i data-lucide="check" aria-hidden="true"></i></div>
+            <div class="feat-text">
+              <strong>Flexible Payment & Insurance</strong>
+              <span>We work with all major health insurance providers and offer instalment payment plans.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="container">
+    <div class="section-label">Meet the Experts</div>
+    <h2 class="section-title">Our Dental Team</h2>
+    <p class="section-sub">Highly trained, caring professionals dedicated to giving you the best dental experience in Accra.</p>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-initials">DK</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. Kwame Dentrix</div>
+          <div class="team-role">Lead Dentist & Founder</div>
+          <div class="team-desc">Over 15 years of experience. Specialist in cosmetic dentistry and implants. BDS, University of Ghana; MSc, London.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-initials">AA</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. Ama Asante</div>
+          <div class="team-role">Orthodontist</div>
+          <div class="team-desc">Specialist in braces and clear aligners. Trained at University of Cape Town. Certified Invisalign provider.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-initials">KB</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. Kofi Boateng</div>
+          <div class="team-role">Oral Surgeon</div>
+          <div class="team-desc">Expert in complex extractions, bone grafting and dental implant surgery. BDS with distinction, KNUST.</div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="team-photo">
+          <div class="team-initials">EA</div>
+        </div>
+        <div class="team-info">
+          <div class="team-name">Dr. Efua Adjei</div>
+          <div class="team-role">Pediatric Dentist</div>
+          <div class="team-desc">Gentle and patient-focused care for children from 1 to 16. Specialises in early intervention and preventive care.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING + AI -->
+<section id="booking">
+  <div class="container">
+    <div class="booking-grid">
+      <div>
+        <div class="section-label">Schedule a Visit</div>
+        <h2 class="section-title">Book Your Appointment Today</h2>
+        <p class="section-sub">Fill in the form and our front desk team will confirm your appointment within 2 hours. Walk-ins also welcome.</p>
+        <div class="contact-flex">
+          <div class="contact-item">
+            <div class="contact-icon phone"><i data-lucide="phone" aria-hidden="true"></i></div>
+            <div class="contact-details"><div class="contact-label">Main Line</div><a href="tel:0578444450" class="contact-link">0578 444 450</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon emergency"><i data-lucide="triangle-alert" aria-hidden="true"></i></div>
+            <div class="contact-details"><div class="contact-label">24hr Emergency</div><a href="tel:0503756324" class="contact-link emergency">0503 756 324</a></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon email"><i data-lucide="mail" aria-hidden="true"></i></div>
+            <div class="contact-details"><div class="contact-label">Email Us</div><a href="mailto:kingsleykaine46@gmail.com" class="contact-link email">kingsleykaine46@gmail.com</a></div>
+          </div>
+        </div>
+      </div>
+      <div class="booking-form">
+        <div class="form-title">Request an Appointment</div>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" name="firstName" placeholder="Kwame"></div>
+          <div class="form-group"><label>Last Name</label><input type="text" name="lastName" placeholder="Mensah"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone Number</label><input type="tel" name="phone" placeholder="0244 000 000"></div>
+          <div class="form-group"><label>Email Address</label><input type="email" name="email" placeholder="you@example.com"></div>
+        </div>
+        <div class="form-group">
+          <label>Service Required</label>
+          <select name="service" aria-label="Service Required">
+            <option value="">Select a service…</option>
+            <option>General Check-up & Cleaning</option>
+            <option>Teeth Whitening</option>
+            <option>Dental Implants</option>
+            <option>Orthodontics / Braces</option>
+            <option>Root Canal Treatment</option>
+            <option>Pediatric Dentistry</option>
+            <option>Porcelain Veneers</option>
+            <option>Oral Surgery</option>
+            <option>Emergency Dental Care</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Preferred Date</label><input type="date" name="date" aria-label="Preferred Date"></div>
+          <div class="form-group"><label>Preferred Time</label>
+            <select name="time" aria-label="Preferred Time">
+              <option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option>
+              <option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option>
+              <option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option>
+              <option>5:00 PM</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group"><label>Additional Notes</label><textarea name="notes" placeholder="Any specific concerns or medical conditions we should know about?"></textarea></div>
+        <button class="btn-book" onclick="handleBooking()">Confirm Appointment Request ✓</button>
+        <button class="btn-book pay-deposit" id="payDepositBtn" onclick="payDeposit()">Pay GHS 50 Deposit via Paystack</button>
+      </div>
+    </div>
+
+    <!-- AI ASSISTANT -->
+    <div class="ai-margin">
+      <div class="section-label ai-label">AI-Powered</div>
+      <h2 class="section-title ai-title">Chat with Denta, Our AI Assistant</h2>
+      <p class="ai-desc">Have questions about our services, pricing, or dental health? Denta is here 24/7 to help.</p>
+      <div class="ai-assistant-wrap">
+        <div class="ai-card">
+          <div class="ai-header">
+            <div class="ai-avatar"><i data-lucide="bot" aria-hidden="true"></i></div>
+            <div>
+              <div class="ai-title">Denta – K-Dentrix AI Assistant</div>
+              <div class="ai-status"><span class="ai-online"></span>Online & ready to help</div>
+            </div>
+          </div>
+          <div class="ai-messages" id="aiMessages">
+            <div class="msg msg-bot">Hello! I'm Denta, your K-Dentrix AI assistant. I can help you with information about our services, pricing, hours, and general dental health questions. How can I help you today?</div>
+          </div>
+          <div class="quick-btns">
+            <button class="quick-btn" onclick="quickAsk('What services do you offer?')">Services</button>
+            <button class="quick-btn" onclick="quickAsk('What are your opening hours?')">Opening Hours</button>
+            <button class="quick-btn" onclick="quickAsk('How much does teeth whitening cost?')">Pricing</button>
+            <button class="quick-btn" onclick="quickAsk('Where are you located?')">Location</button>
+            <button class="quick-btn" onclick="quickAsk('Do you accept insurance?')">Insurance</button>
+            <button class="quick-btn" onclick="quickAsk('Is there emergency dental care?')">Emergency</button>
+          </div>
+          <div class="ai-input-wrap">
+            <input class="ai-input" id="aiInput" type="text" placeholder="Ask Denta anything about K-Dentrix…" onkeydown="if(event.key==='Enter')sendAI()">
+            <button class="ai-send" onclick="sendAI()" aria-label="Send message"><i data-lucide="send-horizontal" aria-hidden="true"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOURS & CONTACT -->
+<section id="info">
+  <div class="container">
+    <div class="section-label">Find Us</div>
+    <h2 class="section-title">Hours & Contact Information</h2>
+    <p class="section-sub">We're conveniently located in East Legon, American House — easy to reach from anywhere in Greater Accra.</p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-title"><i data-lucide="clock-3" aria-hidden="true"></i> Opening Hours</div>
+        <ul class="hours-list">
+          <li><span class="day">Monday</span><span class="time">8:00 AM – 6:00 PM</span></li>
+          <li><span class="day">Tuesday</span><span class="time">8:00 AM – 6:00 PM</span></li>
+          <li><span class="day">Wednesday</span><span class="time">8:00 AM – 6:00 PM</span></li>
+          <li><span class="day">Thursday</span><span class="time">8:00 AM – 6:00 PM</span></li>
+          <li><span class="day">Friday</span><span class="time">8:00 AM – 5:00 PM</span></li>
+          <li><span class="day">Saturday</span><span class="time">9:00 AM – 2:00 PM</span></li>
+          <li><span class="day">Sunday</span><span class="closed">Emergency Only</span></li>
+        </ul>
+        <div class="emergency-box">
+          <span class="e-icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>
+          <div>
+            <strong>24hr Emergency Line</strong>
+            <a href="tel:0503756324">0503 756 324</a>
+          </div>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title"><i data-lucide="list-checks" aria-hidden="true"></i> Contact Details</div>
+        <ul class="contact-list">
+          <li>
+            <span class="c-icon"><i data-lucide="phone" aria-hidden="true"></i></span>
+            <div><strong>Main Phone</strong><a href="tel:0578444450">0578 444 450</a></div>
+          </li>
+          <li>
+            <span class="c-icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>
+            <div><strong>Emergency</strong><a href="tel:0503756324">0503 756 324</a></div>
+          </li>
+          <li>
+            <span class="c-icon"><i data-lucide="mail" aria-hidden="true"></i></span>
+            <div><strong>Email</strong><a href="mailto:kingsleykaine46@gmail.com">kingsleykaine46@gmail.com</a></div>
+          </li>
+          <li>
+            <span class="c-icon"><i data-lucide="message-circle" aria-hidden="true"></i></span>
+            <div><strong>WhatsApp</strong><a href="https://wa.me/233578444450" target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a></div>
+          </li>
+          <li>
+            <span class="c-icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>
+            <div><strong>Address</strong><span>American House Road, East Legon, Accra, Ghana</span></div>
+          </li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title"><i data-lucide="map-pin" aria-hidden="true"></i> Our Location</div>
+        <p class="location-p">Located on the main American House Road in East Legon — adjacent to the American House residential estate, close to the A&C Mall area.</p>
+        <div class="map-placeholder">
+          <span><i data-lucide="map" aria-hidden="true"></i></span>
+          <p><strong class="map-strong">K-Dentrix Dental Clinic</strong><br>American House, East Legon, Accra</p>
+        </div>
+        <a href="https://maps.google.com/?q=American+House+East+Legon+Accra" target="_blank" rel="noopener noreferrer" class="map-link">Open in Google Maps →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-label">Patient Stories</div>
+    <h2 class="section-title">What Our Patients Say</h2>
+    <p class="section-sub">Real reviews from real patients across East Legon and Greater Accra.</p>
+    <div class="testimonials-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I had a root canal here and it was completely painless. The staff made me feel so relaxed throughout. Highly recommend K-Dentrix to anyone anxious about dental visits!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar testi-avatar-ao">AO</div>
+          <div><div class="testi-name">Akosua Osei</div><div class="testi-loc">East Legon, Accra</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Got veneers done last month and people keep asking if my smile is natural. The quality of work here rivals anything I've seen abroad. Worth every pesewa!"</p>
+        <div class="testi-author">
+          <div class="testi-avatar testi-avatar-kd">KD</div>
+          <div><div class="testi-name">Kweku Darko</div><div class="testi-loc">Cantonments, Accra</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Took my 6-year-old son for his first visit. Dr. Efua was amazing — patient, gentle and made it fun. He's actually excited to go back! As a parent, that means everything."</p>
+        <div class="testi-author">
+          <div class="testi-avatar testi-avatar-em">EM</div>
+          <div><div class="testi-name">Esi Mensah</div><div class="testi-loc">Adenta, Accra</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label">Common Questions</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-sub">Everything you need to know before your visit to K-Dentrix.</p>
+    <div class="faq-grid" id="faqGrid">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">How often should I visit the dentist? <span class="arrow">▾</span></div>
+        <div class="faq-a">We recommend a check-up and professional cleaning every 6 months for most patients. Patients with gum disease or higher risk factors may need more frequent visits — our dentists will advise you personally.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Do you accept National Health Insurance (NHIS)? <span class="arrow">▾</span></div>
+        <div class="faq-a">Yes! K-Dentrix is registered with the National Health Insurance Authority (NHIA). We also accept most private health insurance providers including Enterprise Health, Glico, and AXA Mansard. Contact us to confirm your specific plan.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">What should I do in a dental emergency? <span class="arrow">▾</span></div>
+        <div class="faq-a">Call our 24-hour emergency line immediately: 0503 756 324. For knocked-out teeth, rinse gently and keep the tooth moist (in milk or saliva). Come in as soon as possible — quick action significantly improves outcomes.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Is teeth whitening safe? <span class="arrow">▾</span></div>
+        <div class="faq-a">When performed by a dental professional, teeth whitening is completely safe. Our in-chair whitening treatments use controlled concentrations of whitening agents and include custom-fitted trays that protect your gums throughout the process.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">How long does a dental implant procedure take? <span class="arrow">▾</span></div>
+        <div class="faq-a">The implant placement itself takes 1–2 hours per tooth under local anaesthetic. However, full osseointegration (healing) takes 3–6 months, after which the crown is placed. The entire process from consultation to final restoration is typically 4–8 months.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Do you offer flexible payment plans? <span class="arrow">▾</span></div>
+        <div class="faq-a">Yes — for larger treatment plans (implants, orthodontics, full smile makeovers), we offer interest-free instalment payment options spread over 3–12 months. Ask our front desk team to set up a payment plan at your consultation.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">Are your dental X-rays safe? <span class="arrow">▾</span></div>
+        <div class="faq-a">Our modern digital X-ray equipment emits up to 90% less radiation than traditional film X-rays. We also use lead aprons and thyroid collars as standard protective measures. Dental X-rays are considered very safe for adults and children.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">At what age should my child first visit the dentist? <span class="arrow">▾</span></div>
+        <div class="faq-a">We recommend bringing your child for their first visit around their first birthday or within 6 months of their first tooth erupting. Early visits help establish healthy habits, allow us to monitor development, and make children comfortable with the dental environment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSURANCE -->
+<section id="insurance">
+  <div class="container">
+    <div class="section-label">Accepted Coverage</div>
+    <h2 class="section-title">Insurance & Payment Partners</h2>
+    <p class="section-sub insurance-sub">We work with all major health insurance providers and mobile money platforms for your convenience.</p>
+    <div class="insurance-logos">
+      <div class="insurance-tag"><i data-lucide="building-2" aria-hidden="true"></i> NHIS (National Health Insurance)</div>
+      <div class="insurance-tag"><i data-lucide="shield" aria-hidden="true"></i> Enterprise Health Insurance</div>
+      <div class="insurance-tag"><i data-lucide="shield" aria-hidden="true"></i> Glico Healthcare</div>
+      <div class="insurance-tag"><i data-lucide="shield" aria-hidden="true"></i> AXA Mansard Health</div>
+      <div class="insurance-tag"><i data-lucide="shield" aria-hidden="true"></i> Sanlam Health</div>
+      <div class="insurance-tag"><i data-lucide="shield" aria-hidden="true"></i> Metropolitan Health</div>
+      <div class="insurance-tag"><i data-lucide="smartphone" aria-hidden="true"></i> MTN Mobile Money</div>
+      <div class="insurance-tag"><i data-lucide="smartphone" aria-hidden="true"></i> Vodafone Cash</div>
+      <div class="insurance-tag"><i data-lucide="smartphone" aria-hidden="true"></i> AirtelTigo Money</div>
+      <div class="insurance-tag"><i data-lucide="credit-card" aria-hidden="true"></i> Visa / Mastercard</div>
+      <div class="insurance-tag"><i data-lucide="banknote" aria-hidden="true"></i> Cash Accepted</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo footer-logo">
+          <div class="nav-logo-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path class="logo-tooth" d="M12 3.25c-3.85 0-6.25 2.63-6.25 5.99 0 2.35.78 4.16 1.58 5.85.6 1.28 1 2.83 1.48 4.2.24.7.61 1.46 1.49 1.46.98 0 1.34-.9 1.57-1.78l.42-1.69c.16-.63.43-.98.92-.98s.76.35.92.98l.42 1.69c.23.88.59 1.78 1.57 1.78.88 0 1.25-.76 1.49-1.46.48-1.37.88-2.92 1.48-4.2.8-1.69 1.58-3.5 1.58-5.85 0-3.36-2.4-5.99-6.25-5.99Z"/>
+              <path class="logo-sparkle" d="M16.85 4.15l.42 1.19 1.2.42-1.2.43-.42 1.18-.43-1.18-1.18-.43 1.18-.42.43-1.19Z"/>
+            </svg>
+          </div>
+          <span class="nav-logo-text">K-<span>Dentrix</span></span>
+        </a>
+        <p class="footer-desc">Accra's trusted dental clinic — delivering world-class oral health care with warmth and precision. Serving East Legon and Greater Accra since 2014.</p>
+        <div class="footer-socials footer-socials-margin">
+          <a href="YOUR_FACEBOOK_URL" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i data-lucide="facebook" aria-hidden="true"></i></a>
+          <a href="YOUR_LINKEDIN_URL" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i data-lucide="linkedin" aria-hidden="true"></i></a>
+          <a href="YOUR_INSTAGRAM_URL" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i data-lucide="instagram" aria-hidden="true"></i></a>
+          <a href="https://wa.me/233578444450" class="social-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i data-lucide="message-circle" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul class="footer-links">
+          <li><a href="#services">General Dentistry</a></li>
+          <li><a href="#services">Teeth Whitening</a></li>
+          <li><a href="#services">Dental Implants</a></li>
+          <li><a href="#services">Orthodontics</a></li>
+          <li><a href="#services">Root Canal</a></li>
+          <li><a href="#services">Pediatric Care</a></li>
+          <li><a href="#services">Oral Surgery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#team">Our Doctors</a></li>
+          <li><a href="#testimonials">Patient Reviews</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#insurance">Insurance</a></li>
+          <li><a href="#booking">Book Appointment</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul class="footer-links">
+          <li><a href="tel:0578444450"><span class="footer-link-icon"><i data-lucide="phone" aria-hidden="true"></i></span>0578 444 450</a></li>
+          <li><a href="tel:0503756324"><span class="footer-link-icon"><i data-lucide="triangle-alert" aria-hidden="true"></i></span>0503 756 324 (Emergency)</a></li>
+          <li><a href="mailto:kingsleykaine46@gmail.com"><span class="footer-link-icon"><i data-lucide="mail" aria-hidden="true"></i></span>kingsleykaine46@gmail.com</a></li>
+          <li><a href="#"><span class="footer-link-icon"><i data-lucide="map-pin" aria-hidden="true"></i></span>American House, East Legon</a></li>
+          <li><a href="#"><span class="footer-link-icon"><i data-lucide="clock-3" aria-hidden="true"></i></span>Mon–Fri: 8AM–6PM</a></li>
+          <li><a href="#"><span class="footer-link-icon"><i data-lucide="clock-3" aria-hidden="true"></i></span>Sat: 9AM–2PM</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 K-Dentrix Dental Clinic. All rights reserved. | American House Road, East Legon, Accra, Ghana</span>
+      <div class="footer-bottom-flex">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+lucide.createIcons();
+const AUTH_TOKEN_KEY = 'kdentrix-auth-token';
+const AUTH_USER_KEY = 'kdentrix-auth-user';
+const API_BASE = window.KDENTRIX_API_BASE || '';
+let googleClientId = '';
+let googleAuthInitialized = false;
+
+function apiUrl(path) {
+  return `${API_BASE}${path}`;
+}
+
+function getAuthToken() {
+  return localStorage.getItem(AUTH_TOKEN_KEY) || '';
+}
+
+function getSessionUser() {
+  try {
+    return JSON.parse(localStorage.getItem(AUTH_USER_KEY) || 'null');
+  } catch {
+    return null;
+  }
+}
+
+function setSessionAuth(token, user) {
+  localStorage.setItem(AUTH_TOKEN_KEY, token);
+  localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+}
+
+function clearSessionAuth() {
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  localStorage.removeItem(AUTH_USER_KEY);
+}
+
+function authHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${getAuthToken()}`
+  };
+}
+
+async function fetchAuthConfig() {
+  try {
+    const res = await fetch(apiUrl('/api/auth/config'));
+    const data = await res.json();
+    if (data.success) {
+      googleClientId = data.googleClientId || '';
+      initializeGoogleAuth();
+    }
+  } catch {
+    googleClientId = '';
+  }
+}
+
+function initializeGoogleAuth() {
+  if (googleAuthInitialized || !googleClientId || !window.google?.accounts?.id) return;
+  window.google.accounts.id.initialize({
+    client_id: googleClientId,
+    callback: handleGoogleCredentialResponse,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+  googleAuthInitialized = true;
+}
+
+function openAuthModal(tab = 'signin') {
+  setAuthTab(tab);
+  initializeGoogleAuth();
+  const modal = document.getElementById('authModal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById('authModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+function setAuthTab(tab) {
+  const isSignup = tab === 'signup';
+  document.getElementById('signinTabBtn').classList.toggle('active', !isSignup);
+  document.getElementById('signupTabBtn').classList.toggle('active', isSignup);
+  document.getElementById('signinForm').classList.toggle('active', !isSignup);
+  document.getElementById('signupForm').classList.toggle('active', isSignup);
+  document.getElementById('authHeading').textContent = isSignup ? 'Create Your Account' : 'Access Your Account';
+  document.getElementById('authSubcopy').textContent = isSignup
+    ? 'New patient? Sign up with your email and password, or use Google if it is enabled on the server.'
+    : 'Use your existing email and password, or continue with Google if it is enabled on the server.';
+  document.getElementById('authFootnote').innerHTML = isSignup
+    ? 'Already have an account? <button type="button" onclick="setAuthTab(\'signin\')">Sign in here</button>'
+    : 'New to K-Dentrix? <button type="button" onclick="setAuthTab(\'signup\')">Create an account</button>';
+}
+
+function updateAuthUI() {
+  const currentUser = getSessionUser();
+  const signInBtn = document.querySelector('.nav-auth-btn:not(.primary)');
+  const signUpBtn = document.querySelector('.nav-auth-btn.primary');
+  const chip = document.getElementById('authUserChip');
+  const name = document.getElementById('authUserName');
+
+  if (currentUser) {
+    if (signInBtn) signInBtn.style.display = 'none';
+    if (signUpBtn) signUpBtn.style.display = 'none';
+    chip.style.display = 'inline-flex';
+    name.textContent = currentUser.name || currentUser.email;
+  } else {
+    if (signInBtn) signInBtn.style.display = 'inline-flex';
+    if (signUpBtn) signUpBtn.style.display = 'inline-flex';
+    chip.style.display = 'none';
+    name.textContent = 'Guest';
+  }
+
+  const firstNameInput = document.querySelector('[name="firstName"]');
+  const lastNameInput = document.querySelector('[name="lastName"]');
+  const emailInput = document.querySelector('[name="email"]');
+  if (currentUser) {
+    const nameParts = (currentUser.name || '').trim().split(' ').filter(Boolean);
+    if (firstNameInput && !firstNameInput.value) firstNameInput.value = nameParts[0] || '';
+    if (lastNameInput && !lastNameInput.value) lastNameInput.value = nameParts.slice(1).join(' ');
+    if (emailInput && !emailInput.value) emailInput.value = currentUser.email || '';
+  }
+}
+
+function completeAuth(data, successMessage) {
+  setSessionAuth(data.token, data.user);
+  updateAuthUI();
+  closeAuthModal();
+  document.getElementById('signinForm')?.reset();
+  document.getElementById('signupForm')?.reset();
+  showToast(successMessage);
+}
+
+async function hydrateAuthSession() {
+  const token = getAuthToken();
+  if (!token) {
+    updateAuthUI();
+    return;
+  }
+
+  try {
+    const res = await fetch(apiUrl('/api/auth/me'), { headers: authHeaders() });
+    const data = await res.json();
+    if (data.success) {
+      setSessionAuth(token, data.user);
+    } else {
+      clearSessionAuth();
+    }
+  } catch {
+    clearSessionAuth();
+  }
+
+  updateAuthUI();
+}
+
+async function submitSignUp(event) {
+  event.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim().toLowerCase();
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+  if (!name || !email || !password || !confirmPassword) {
+    showToast('Please complete all sign-up fields.');
+    return;
+  }
+  if (password !== confirmPassword) {
+    showToast('Passwords do not match.');
+    return;
+  }
+
+  try {
+    const res = await fetch(apiUrl('/api/auth/signup'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password })
+    });
+    const data = await res.json();
+    if (!data.success) {
+      showToast(data.message || 'Failed to create account.');
+      if ((data.message || '').toLowerCase().includes('exists')) {
+        setAuthTab('signin');
+        document.getElementById('signinEmail').value = email;
+      }
+      return;
+    }
+    completeAuth(data, 'Account created successfully. You are now signed in.');
+  } catch {
+    showToast('Could not connect to the server. Please try again.');
+  }
+}
+
+async function submitSignIn(event) {
+  event.preventDefault();
+  const email = document.getElementById('signinEmail').value.trim().toLowerCase();
+  const password = document.getElementById('signinPassword').value;
+
+  if (!email || !password) {
+    showToast('Please enter your email and password.');
+    return;
+  }
+
+  try {
+    const res = await fetch(apiUrl('/api/auth/login'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (!data.success) {
+      showToast(data.message || 'Sign in failed.');
+      return;
+    }
+    completeAuth(data, `Welcome back, ${(data.user.name || 'patient').split(' ')[0]}.`);
+  } catch {
+    showToast('Could not connect to the server. Please try again.');
+  }
+}
+
+function logoutUser() {
+  clearSessionAuth();
+  updateAuthUI();
+  showToast('You have been signed out.');
+}
+
+async function handleGoogleCredentialResponse(response) {
+  if (!response?.credential) {
+    showToast('Google sign-in did not complete.');
+    return;
+  }
+
+  try {
+    const res = await fetch(apiUrl('/api/auth/google'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ credential: response.credential })
+    });
+    const data = await res.json();
+    if (!data.success) {
+      showToast(data.message || 'Google sign-in failed.');
+      return;
+    }
+    completeAuth(data, `Welcome, ${(data.user.name || 'patient').split(' ')[0]}.`);
+  } catch {
+    showToast('Could not connect to the server. Please try again.');
+  }
+}
+
+function handleGoogleAuth() {
+  if (!googleClientId) {
+    showToast('Google sign-in is not configured on the server yet.');
+    return;
+  }
+
+  initializeGoogleAuth();
+  if (!window.google?.accounts?.id) {
+    showToast('Google sign-in is still loading. Please try again.');
+    return;
+  }
+
+  window.google.accounts.id.prompt();
+}
+
+document.getElementById('authModal').addEventListener('click', (event) => {
+  if (event.target.id === 'authModal') closeAuthModal();
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') closeAuthModal();
+});
+
+fetchAuthConfig();
+hydrateAuthSession();
+// ── NAV SCROLL
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('mainNav');
+  nav.style.boxShadow = window.scrollY > 20 ? '0 2px 30px rgba(31,35,64,0.08)' : '';
+});
+
+// ── HAMBURGER
+function toggleMenu() {
+  const links = document.querySelector('.nav-links');
+  if (!links._open) {
+    links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:72px;left:0;right:0;background:#f7f2ee;padding:24px 24px;gap:20px;border-bottom:1px solid #ded3d8;z-index:999;';
+    links._open = true;
+  } else {
+    links.style.display = 'none';
+    links._open = false;
+  }
+}
+
+// ── FAQ
+function toggleFAQ(el) {
+  const item = el.parentElement;
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// ── TOAST
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ── BOOKING FORM — connected to backend API
+let lastAppointmentId = null;
+
+async function handleBooking() {
+  const get = n => document.querySelector(`[name="${n}"]`)?.value?.trim() || '';
+
+  const firstName = get('firstName');
+  const lastName  = get('lastName');
+  const phone     = get('phone');
+  const email     = get('email');
+  const service   = get('service');
+  const date      = get('date');
+  const time      = get('time');
+  const notes     = get('notes');
+
+  // Validation
+  if (!firstName || !phone || !email || !service || !date || !time) {
+    showToast('Please fill in all required fields.'); return;
+  }
+  if (!/^\S+@\S+\.\S+$/.test(email)) {
+    showToast('Please enter a valid email address.'); return;
+  }
+
+  // Loading state
+  const btn = document.querySelector('.btn-book');
+  const orig = btn.textContent;
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch(apiUrl('/api/appointments'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ firstName, lastName, phone, email, service, date, time, notes })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      lastAppointmentId = data.appointmentId;
+      showToast(`Booked successfully. Ref: ${data.bookingRef} — Check your email for confirmation.`);
+      // Clear form fields
+      document.querySelectorAll('.booking-form input, .booking-form textarea')
+        .forEach(el => el.value = '');
+      // Show Paystack deposit button
+      document.getElementById('payDepositBtn').style.display = 'block';
+    } else {
+      showToast(data.message);
+    }
+  } catch {
+    showToast('Connection error. Please check your internet and try again.');
+  } finally {
+    btn.textContent = orig;
+    btn.disabled = false;
+  }
+}
+
+// ── PAYSTACK DEPOSIT
+async function payDeposit() {
+  if (!lastAppointmentId) { showToast('Please book your appointment first.'); return; }
+  try {
+    const res = await fetch(apiUrl('/api/payments/initiate'), {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ appointmentId: lastAppointmentId })
+    });
+    const data = await res.json();
+    if (data.success) {
+      window.location.href = data.authorizationUrl; // Redirect to Paystack
+    } else {
+      showToast(data.message);
+    }
+  } catch {
+    showToast('Payment error. Please try again.');
+  }
+}
+
+// ── AI ASSISTANT
+const KB = {
+  services: "We offer a full range of dental services at K-Dentrix:\n\n- General Dentistry (check-ups, cleaning, fillings) from GHS 150\n- Teeth Whitening from GHS 350\n- Dental Implants from GHS 2,500\n- Orthodontics / Braces from GHS 1,200\n- Root Canal Treatment from GHS 500\n- Pediatric Dentistry from GHS 100\n- Porcelain Veneers from GHS 800/tooth\n- Oral Surgery from GHS 300\n- Digital X-Rays from GHS 80\n\nWhich service would you like to know more about?",
+  hours: "Our opening hours are:\n\n- Monday – Friday: 8:00 AM – 6:00 PM\n- Saturday: 9:00 AM – 2:00 PM\n- Sunday: Emergency cases only\n\nOur 24-hour emergency line is always available: 0503 756 324",
+  location: "We are located at:\n\nAmerican House Road, East Legon, Accra, Ghana\n\nWe're close to the A&C Mall area, within the American House residential estate in East Legon. Easy to reach from most parts of Greater Accra.\n\nParking is available on-site.",
+  contact: "Here's how to reach us:\n\nMain Line: 0578 444 450\nEmergency: 0503 756 324 (24hrs)\nEmail: kingsleykaine46@gmail.com\nWhatsApp: 0578 444 450\n\nOur friendly front desk team is available during opening hours.",
+  insurance: "Yes! We accept a wide range of insurance and payment options:\n\n- NHIS (National Health Insurance)\n- Enterprise Health, Glico, AXA Mansard, Sanlam, Metropolitan\n- MTN Mobile Money, Vodafone Cash, AirtelTigo Money\n- Visa / Mastercard\n- Cash\n\nWe also offer interest-free instalment plans for larger treatments.",
+  emergency: "For dental emergencies, please call our 24-hour emergency line immediately:\n\n0503 756 324\n\nDental emergencies we handle include:\n- Severe toothache\n- Knocked-out or broken teeth\n- Dental abscess or swelling\n- Lost crowns or fillings causing pain\n- Injury to mouth, jaw or gums\n\nFor knocked-out teeth: rinse gently, keep moist in milk or saliva, and come in as fast as possible.",
+  whitening: "Our professional teeth whitening treatments can brighten your smile by up to 8 shades.\n\n- In-Chair Whitening: 1-hour session, immediate results, from GHS 350\n- Take-Home Kits: Custom trays + professional-grade gel, from GHS 250\n\nBoth options are safe, effective, and supervised by our dentists. Results typically last 1–2 years with proper care.",
+  implants: "Dental implants are a permanent solution for missing teeth:\n\nStarting from GHS 2,500 per tooth\n- Titanium implant post placed in jawbone\n- Custom ceramic crown fitted after healing\n- Looks, feels and functions like a natural tooth\n- Can last a lifetime with proper care\n\nThe full process takes approximately 4–8 months. We offer payment plans to make this affordable.",
+  braces: "We offer two types of orthodontic treatment:\n\n- Traditional Metal Braces from GHS 1,200\n- Clear Aligners (Invisalign-style) from GHS 2,500\n\nTreatment duration varies from 12–24 months depending on the complexity of your case. Dr. Ama Asante, our certified orthodontist, will assess you and recommend the best option.",
+  payment: "We offer flexible payment options:\n\n- All major cards accepted\n- Mobile Money (MTN, Vodafone, AirtelTigo)\n- Cash\n- Most health insurance providers\n\nFor treatments over GHS 1,000, we offer interest-free instalment plans spread over 3–12 months. Ask our front desk team for details.",
+  children: "Yes! We have a dedicated pediatric dentist, Dr. Efua Adjei, who specialises in child-friendly dental care.\n\n- We welcome children from 12 months old\n- Our treatment rooms are designed to be fun and non-threatening\n- Services include check-ups, fissure sealants, fluoride treatments, and early orthodontic assessment\n- Children's consultations from GHS 100\n\nWe recommend first visits around the child's first birthday.",
+  default: "I'm Denta, your K-Dentrix AI assistant. I can help you with:\n\n- Our dental services and pricing\n- Opening hours\n- Clinic location\n- Contact details\n- Insurance information\n- Emergency dental care\n- General dental health questions\n\nFeel free to ask me anything, or call us directly on 0578 444 450."
+};
+
+function getAIResponse(msg) {
+  const m = msg.toLowerCase();
+  if (m.includes('service') || m.includes('offer') || m.includes('treat')) return KB.services;
+  if (m.includes('hour') || m.includes('open') || m.includes('close') || m.includes('time') || m.includes('when')) return KB.hours;
+  if (m.includes('locat') || m.includes('where') || m.includes('address') || m.includes('east legon') || m.includes('find')) return KB.location;
+  if (m.includes('contact') || m.includes('phone') || m.includes('call') || m.includes('email') || m.includes('whatsapp') || m.includes('number')) return KB.contact;
+  if (m.includes('insur') || m.includes('nhis') || m.includes('payment') || m.includes('pay') || m.includes('mobile money') || m.includes('plan') || m.includes('install')) return KB.payment;
+  if (m.includes('emergency') || m.includes('urgent') || m.includes('pain') || m.includes('hurts') || m.includes('broke') || m.includes('knocked')) return KB.emergency;
+  if (m.includes('whiten') || m.includes('bright') || m.includes('stain') || m.includes('yellow')) return KB.whitening;
+  if (m.includes('implant') || m.includes('missing tooth') || m.includes('missing teeth')) return KB.implants;
+  if (m.includes('brace') || m.includes('align') || m.includes('crooked') || m.includes('orthodon') || m.includes('straight')) return KB.braces;
+  if (m.includes('child') || m.includes('kid') || m.includes('pediatric') || m.includes('baby') || m.includes('son') || m.includes('daughter')) return KB.children;
+  if (m.includes('hello') || m.includes('hi ') || m.includes('hey') || m.includes('good morning') || m.includes('good afternoon')) return "Hello! Welcome to K-Dentrix. I'm Denta, your AI dental assistant. How can I help you today? You can ask me about our services, booking an appointment, pricing, opening hours, or anything dental-related.";
+  if (m.includes('thank') || m.includes('thanks')) return "You're very welcome. Is there anything else I can help you with? Don't hesitate to call us on 0578 444 450 if you'd like to speak with our team directly.";
+  if (m.includes('book') || m.includes('appoint') || m.includes('schedul') || m.includes('visit')) return "To book an appointment, you can:\n\n- Fill out our online form above\n- Call us: 0578 444 450\n- WhatsApp us: 0578 444 450\n- Email: kingsleykaine46@gmail.com\n\nWe're open Mon–Fri 8AM–6PM and Saturday 9AM–2PM. For emergencies, call 0503 756 324 anytime.";
+  return KB.default;
+}
+
+function addMsg(text, isUser) {
+  const msgs = document.getElementById('aiMessages');
+  const div = document.createElement('div');
+  div.className = 'msg ' + (isUser ? 'msg-user' : 'msg-bot');
+  div.style.whiteSpace = 'pre-line';
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('aiMessages');
+  const div = document.createElement('div');
+  div.className = 'typing-dots'; div.id = 'typingDots';
+  div.innerHTML = '<div class="dot"></div><div class="dot"></div><div class="dot"></div>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function hideTyping() {
+  const d = document.getElementById('typingDots');
+  if (d) d.remove();
+}
+
+function sendAI() {
+  const input = document.getElementById('aiInput');
+  const text = input.value.trim();
+  if (!text) return;
+  addMsg(text, true);
+  input.value = '';
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    addMsg(getAIResponse(text), false);
+  }, 900 + Math.random() * 600);
+}
+
+function quickAsk(q) {
+  document.getElementById('aiInput').value = q;
+  sendAI();
+  document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── FADE IN ON SCROLL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.service-card, .team-card, .testi-card, .faq-item, .info-card').forEach(el => {
+  el.style.cssText += 'opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease;';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
